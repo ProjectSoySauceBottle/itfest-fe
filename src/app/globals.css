@@ -27,13 +27,13 @@
 
 @layer components {
   .navbar-menu-link {
-    @apply relative text-sm inline-block font-medium text-white transition-colors duration-300;
+    @apply relative text-sm block md:inline-block font-medium text-black md:text-white transition-colors duration-300;
   }
   .navbar-menu-link:hover {
     @apply text-primary;
   }
   .navbar-menu-link::after {
-    @apply content-[''] absolute left-0 -bottom-1 w-0 h-[1px] bg-primary transition-all duration-200 ease-out;
+    @apply content-[''] absolute left-0 -bottom-1 w-0 h-[1px] bg-primary transition-all duration-700 md:duration-300 ease-out;
   }
   .navbar-menu-link:hover::after {
     @apply w-full;

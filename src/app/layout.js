@@ -1,6 +1,12 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "@mantine/notifications/styles.css";
+import "@mantine/core/styles.css";
+import "@mantine/carousel/styles.css";
 import Navbar from "@/components/Homepage/Navbar/Navbar";
+import { MantineProvider } from "@mantine/core";
+import { ModalsProvider } from "@mantine/modals";
+import { Notifications } from "@mantine/notifications";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,11 +37,11 @@ export const metadata = {
   openGraph: {
     title: "Soy Sauce Bottle",
     description: "Nikmati kopi terbaik di tempat ternyaman!",
-    metadataBase: new URL("http://127.0.0.1:3000"),
+    url: "http://127.0.0.1:3000",
     siteName: "Soy Sauce Bottle",
     images: [
       {
-        url: "/images/og-image.jpg",
+        url: "https://nextjs.org/og.png",
         width: 1200,
         height: 630,
         alt: "Soy Sauce Bottle Suasana",
@@ -61,8 +67,13 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Navbar />
-        <main>{children}</main>
+        <MantineProvider>
+          <ModalsProvider>
+            <Notifications position="top-right" />
+            <Navbar />
+            <main>{children}</main>
+          </ModalsProvider>
+        </MantineProvider>
       </body>
     </html>
   );
