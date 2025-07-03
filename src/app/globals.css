@@ -1,13 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #010101;
+  --foreground: #ffff;
+  --primary: #b6895b;
+}
+
+@theme {
+  --font-poppins: "Poppins", sans-serif;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -19,8 +25,25 @@
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .navbar-menu-link {
+    @apply relative text-sm inline-block font-medium text-white transition-colors duration-300;
+  }
+  .navbar-menu-link:hover {
+    @apply text-primary;
+  }
+  .navbar-menu-link::after {
+    @apply content-[''] absolute left-0 -bottom-1 w-0 h-[1px] bg-primary transition-all duration-200 ease-out;
+  }
+  .navbar-menu-link:hover::after {
+    @apply w-full;
+  }
+}
+
+@font-face {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url("/assets/fonts/Poppins-Regular.otf") format("otf");
 }
