@@ -21,7 +21,7 @@ export default function Navbar() {
 
         {/* Desktop menu */}
         <div className="hidden md:flex space-x-5 items-center">
-          <Link href="#">
+          <Link href="#home">
             <div className="navbar-menu-link">Home</div>
           </Link>
           <Link href="#about">
@@ -71,7 +71,7 @@ export default function Navbar() {
         className="md:hidden overflow-hidden z-50"
       >
         <Drawer.Body p="0" className="font-poppins font-normal p-3 space-y-1">
-          <Link href="/#">
+          <Link href="/#home">
             <div className="navbar-menu-link font-normal p-3 rounded-md text-base">
               Home
             </div>
