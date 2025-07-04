@@ -18,7 +18,7 @@ export default function Menu() {
             alt="Espresso"
             className="w-48 object-cover object-center rounded-full"
           />
-          <h3 className="mt-2">- Espresso -</h3>
+          <h3 className="mt-2">-- Espresso --</h3>
           <div className="text-sm font-thin mb-2">IDR 20K</div>
         </div>
 
@@ -28,7 +28,7 @@ export default function Menu() {
             alt="Americano"
             className="w-48 object-cover object-center rounded-full"
           />
-          <h3 className="mt-2">- Americano -</h3>
+          <h3 className="mt-2">-- Americano --</h3>
           <div className="text-sm font-thin mb-2">IDR 20K</div>
         </div>
 
@@ -38,7 +38,7 @@ export default function Menu() {
             alt="Latte"
             className="w-48 object-cover object-center rounded-full"
           />
-          <h3 className="mt-2">- Latte -</h3>
+          <h3 className="mt-2">-- Latte --</h3>
           <div className="text-sm font-thin mb-2">IDR 20K</div>
         </div>
 
@@ -48,7 +48,7 @@ export default function Menu() {
             alt="Flat White"
             className="w-48 object-cover object-center rounded-full"
           />
-          <h3 className="mt-2">- Flat White -</h3>
+          <h3 className="mt-2">-- Flat White --</h3>
           <div className="text-sm font-thin mb-2">IDR 20K</div>
         </div>
 
@@ -58,7 +58,7 @@ export default function Menu() {
             alt="Mocha"
             className="w-48 object-cover object-center rounded-full"
           />
-          <h3 className="mt-2">- Mocha -</h3>
+          <h3 className="mt-2">-- Mocha --</h3>
           <div className="text-sm font-thin mb-2">IDR 20K</div>
         </div>
 
@@ -68,7 +68,7 @@ export default function Menu() {
             alt="Macchiato"
             className="w-48 object-cover object-center rounded-full"
           />
-          <h3 className="mt-2">- Macchiato -</h3>
+          <h3 className="mt-2">-- Macchiato --</h3>
           <div className="text-sm font-thin mb-2">IDR 20K</div>
         </div>
       </div>
