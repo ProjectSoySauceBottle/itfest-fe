@@ -8,7 +8,6 @@ export default function Hero() {
       id="home"
       className="min-h-screen flex relative items-center bg-[url('/assets/images/hero-section.jpg')] bg-cover bg-center bg-no-repeat"
     >
-      <div className="block absolute bottom-0 left-0 w-full h-1/4 bg-gradient-to-t from-background"></div>
       <div className="py-6 px-[7%] max-w-xs sm:max-w-sm md:max-w-xl space-y-4 md:space-y-2">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-shadow-lg text-shadow-black/50 leading-8 md:leading-14">
           Mari Nikmati Secangkir <span className="text-primary">Kopi</span>
@@ -24,6 +23,7 @@ export default function Hero() {
           Beli Sekarang
         </Link>
       </div>
+      <div className="block absolute bottom-0 left-0 w-full h-1/4 bg-gradient-to-t from-background"></div>
     </section>
   );
 }

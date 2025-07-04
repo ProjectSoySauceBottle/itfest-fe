@@ -10,7 +10,7 @@ export default function Navbar() {
   const [opened, { open, close }] = useDisclosure(false);
 
   return (
-    <nav className="bg-background/80 font-poppins fixed w-full z-50 border-b-2 border-b-primary">
+    <nav className="bg-background/80 font-poppins fixed w-full z-50 border-b border-b-[#453423]">
       <div className="flex justify-between py-[1rem] items-center px-[7%]">
         {/* Logo */}
         <Link href="/">

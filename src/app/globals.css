@@ -4,6 +4,7 @@
   --background: #010101;
   --foreground: #ffff;
   --primary: #b6895b;
+  scroll-behavior: smooth;
 }
 
 @theme {
