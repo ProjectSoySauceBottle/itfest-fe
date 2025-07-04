@@ -1,11 +1,13 @@
 import About from "@/components/Homepage/About/about";
 import Hero from "@/components/Homepage/Hero/Hero";
+import Menu from "@/components/Homepage/Menu/Menu";
 
 export default function Home() {
   return (
     <div className="bg-background text-white font-poppins">
       <Hero />
       <About />
+      <Menu />
     </div>
   );
 }

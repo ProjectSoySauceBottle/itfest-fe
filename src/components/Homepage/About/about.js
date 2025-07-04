@@ -2,17 +2,18 @@ import React from "react";
 
 export default function About() {
   return (
-    <section id="about" className="min-h-screen pt-20 pb-6 px-5 md:px-[7%]">
+    <section id="about" className="min-h-screen pt-20 pb-6 px-[7%]">
       <h2 className="font-bold text-2xl md:text-4xl text-center">
         <span className="text-primary">Tentang</span> Kami
       </h2>
-      <div className="flex flex-wrap justify-center md:flex-nowrap mt-10 md:space-x-5">
+      <div className="flex flex-wrap justify-center md:flex-nowrap mt-20 md:space-x-5">
         <div className="w-full md:max-w-1/2 relative">
-          <div className="absolute h-full top-0 left-0 w-1/4 bg-gradient-to-tr from-background "></div>
+          <div className="absolute h-full top-0 left-0 w-1/4 bg-gradient-to-r from-background "></div>
+          <div className="absolute h-full top-0 right-0 w-1/4 bg-gradient-to-l from-background "></div>
           <img
             src="/assets/images/Coffee3.jpg"
             alt="About Us"
-            className="w-full h-80 object-cover object-center rounded-md"
+            className="w-full h-96 object-cover object-center rounded-md"
           />
         </div>
         <article className="md:max-w-1/2 space-y-3 mt-4 md:mt-0">
