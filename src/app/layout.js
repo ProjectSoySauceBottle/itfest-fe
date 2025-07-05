@@ -19,6 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL),
   title: {
     default: "Soy Sauce Bottle Cafe",
     template: "%s | Soy Sauce Bottle Cafe",
@@ -37,7 +38,7 @@ export const metadata = {
   openGraph: {
     title: "Soy Sauce Bottle",
     description: "Nikmati kopi terbaik di tempat ternyaman!",
-    url: "http://127.0.0.1:3000",
+    url: "http://localhost:3000",
     siteName: "Soy Sauce Bottle",
     images: [
       {
@@ -54,10 +55,11 @@ export const metadata = {
     card: "summary_large_image",
     title: "Soy Sauce Bottle",
     description: "Tempat terbaik untuk ngopi dan bersantai!",
-    images: ["/images/og-image.jpg"],
+    images: ["/assets/images/hero-section.jpg"],
   },
   icons: {
-    icon: "/favicon.ico",
+    // icon: "/favicon.ico",
+    icon: "/assets/images/Coffee1.jpg",
   },
 };
 
