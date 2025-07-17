@@ -39,7 +39,7 @@ export default function Hero() {
           />
         </FadeIn>
       </div>
-      {/* <div className="block absolute bottom-0 left-0 w-full h-1/4 bg-gradient-to-t from-background"></div> */}
+      <div className="block md:hidden absolute bottom-0 left-0 w-full h-1/4 bg-gradient-to-t from-background"></div>
     </section>
   );
 }
