@@ -17,12 +17,12 @@ export default function Navbar() {
   };
   return (
     <header>
-      <nav className="bg-background/80 font-poppins fixed w-full z-50 border-b border-b-[#453423]">
+      <nav className="bg-background/80 text-primary font-poppins fixed w-full z-50">
         <div className="flex justify-between py-[1rem] items-center px-[7%]">
           {/* Logo */}
           <Link href="/">
-            <div className="text-white font-extrabold text-xl italic">
-              SSB<span className="text-primary">Cafe.</span>
+            <div className="font-extrabold text-xl italic">
+              SSB<span className="text-desc">Cafe.</span>
             </div>
           </Link>
 
@@ -47,21 +47,21 @@ export default function Navbar() {
             <div className="flex space-x-3">
               <button
                 aria-label="Search"
-                className="text-white hover:text-primary focus:outline-none"
+                className="hover:text-foreground focus:outline-none"
               >
                 <CiSearch size="20" />
               </button>
 
               <button
                 aria-label="Shopping Cart"
-                className="text-white hover:text-primary focus:outline-none"
+                className="hover:text-foreground focus:outline-none"
               >
                 <CiShoppingCart size="20" />
               </button>
               <button
                 onClick={() => (opened ? close() : open())}
                 type="button"
-                className="md:hidden text-white hover:text-primary focus:outline-none"
+                className="md:hidden hover:text-foreground focus:outline-none"
               >
                 <MdMenu size="20" />
               </button>

@@ -1,9 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #010101;
-  --foreground: #ffff;
-  --primary: #b6895b;
+  --background: #fbfbf3;
+  --foreground: #0f172a;
+  --primary: #1f2937;
+  --desc: #6b7280;
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
   scroll-behavior: smooth;
 }
 
@@ -15,6 +18,11 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
+  --color-desc: var(--desc);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -28,7 +36,7 @@
 
 @layer components {
   .navbar-menu-link {
-    @apply relative text-sm block md:inline-block font-medium text-black md:text-white transition-colors duration-300;
+    @apply relative text-sm block md:inline-block font-medium text-primary transition-colors duration-300;
   }
   .navbar-menu-link:hover {
     @apply text-primary;

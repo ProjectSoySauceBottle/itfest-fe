@@ -53,18 +53,18 @@ export default function Contact() {
     <section id="contact" className="min-h-screen pt-20 pb-6 px-[7%]">
       <FadeIn>
         <h2 className="font-bold text-2xl md:text-4xl text-center">
-          <span className="text-primary">Kontak</span> Kami
+          <span className="text-desc">Kontak</span> Kami
         </h2>
       </FadeIn>
       <FadeIn direction="up" delay={200}>
-        <p className="max-w-[30rem] text-center text-sm font-thin mx-auto mt-4 leading-6">
+        <p className="max-w-[30rem] text-center text-sm text-desc mx-auto mt-4 leading-6">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas unde
           optio fugiat alias deleniti sapiente!
         </p>
       </FadeIn>
 
       <FadeIn delay={400}>
-        <div className="flex flex-wrap md:flex-nowrap mt-8 bg-[#222] inset-shadow inset-shadow-red-400 shadow-white/50 gap-5">
+        <div className="flex flex-wrap md:flex-nowrap mt-8 bg-primary inset-shadow inset-shadow-red-400 shadow-white/50 gap-5 rounded-md">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.464314266766!2d106.80359067437969!3d-6.589064143404594!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69c5d2e602b501%3A0x25a12f0f97fac4ee!2sSekolah%20Vokasi%20Institut%20Pertanian%20Bogor!5e0!3m2!1sid!2sid!4v1751610350068!5m2!1sid!2sid"
             allowFullScreen="False"

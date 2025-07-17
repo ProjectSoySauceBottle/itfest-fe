@@ -5,7 +5,7 @@ import { FaFacebook, FaInstagram, FaTiktok, FaTwitter } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className="bg-primary text-center space-y-5 py-8 px-[7%]">
+    <footer className="bg-primary text-white font-poppins text-center space-y-5 py-8 px-[7%]">
       <div className="flex justify-center gap-5 ">
         <Link href="/">
           <FaInstagram />
