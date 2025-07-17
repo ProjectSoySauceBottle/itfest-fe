@@ -72,7 +72,6 @@ export default function RootLayout({ children }) {
         <MantineProvider>
           <ModalsProvider>
             <Notifications position="top-right" />
-            <Navbar />
             <main>{children}</main>
           </ModalsProvider>
         </MantineProvider>
