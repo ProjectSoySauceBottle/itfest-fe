@@ -3,7 +3,7 @@ import FadeIn from "@/components/Animation/FadeInAnimation";
 import { Carousel } from "@mantine/carousel";
 import React from "react";
 
-export default function AllMenus() {
+export default function AllMenus({ searchType = null }) {
   const data = [
     {
       name: "Espresso",
@@ -101,31 +101,47 @@ export default function AllMenus() {
     },
   ];
 
-  const dataType = [...new Set(data.map((item) => item.type))];
+  const dataType = [
+    ...new Set(
+      data
+        .filter((item) => {
+          if (searchType) {
+            return item.type === searchType;
+          } else {
+            return item;
+          }
+        })
+        .map((item) => item.type)
+    ),
+  ];
 
   const Card = ({ type }) => {
     return (
       <div key={type} className="mt-20 w-full">
         <h2 className="text-xl font-bold mb-4 capitalize">{type}</h2>
-        <div className="hidden sm:grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {data
-            .filter((item) => item.type === type)
-            .map((item, index) => (
-              <FadeIn key={index} direction="right" delay={index * 100}>
-                <div key={index} className="bg-white rounded shadow p-4">
-                  <img
-                    src={item.image_url}
-                    alt={item.name}
-                    className="w-full h-52 object-cover object-center rounded mb-2"
-                  />
-                  <h3 className="font-semibold">{item.name}</h3>
-                  <p className="text-gray-600">
-                    Rp{Number(item.price).toLocaleString("id-ID")}
-                  </p>
-                </div>
-              </FadeIn>
-            ))}
-        </div>
+        {data.filter((item) => item.type === type)?.length > 0 ? (
+          <div className="hidden sm:grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {data
+              .filter((item) => item.type === type)
+              .map((item, index) => (
+                <FadeIn key={index} direction="right" delay={index * 100}>
+                  <div key={index} className="bg-white rounded shadow p-4">
+                    <img
+                      src={item.image_url}
+                      alt={item.name}
+                      className="w-full h-52 object-cover object-center rounded mb-2"
+                    />
+                    <h3 className="font-semibold">{item.name}</h3>
+                    <p className="text-gray-600">
+                      Rp{Number(item.price).toLocaleString("id-ID")}
+                    </p>
+                  </div>
+                </FadeIn>
+              ))}
+          </div>
+        ) : (
+          <div>Menu Belum Tersedia</div>
+        )}
         <Carousel className="sm:hidden">
           {data
             .filter((item) => item.type === type)
@@ -151,9 +167,13 @@ export default function AllMenus() {
 
   return (
     <div className="flex flex-col items-center">
-      {dataType.map((type) => (
-        <Card key={type} type={type} />
-      ))}
+      {dataType.length > 0 ? (
+        dataType.map((type, index) => <Card key={index} type={type} />)
+      ) : (
+        <div className="mt-20 w-full text-center bg-[#dcdcdc] py-4 rounded-md inset-shadow-sm">
+          Menu <span className="font-bold">{searchType}</span> Tidak Tersedia
+        </div>
+      )}
     </div>
   );
 }
