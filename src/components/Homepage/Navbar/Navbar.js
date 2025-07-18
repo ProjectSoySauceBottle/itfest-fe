@@ -17,7 +17,7 @@ export default function Navbar() {
   };
   return (
     <header>
-      <nav className="bg-background/80 text-primary font-poppins fixed w-full z-50">
+      <nav className="bg-background/80 shadow text-primary font-poppins fixed w-full z-50">
         <div className="flex justify-between py-[1rem] items-center px-[7%]">
           {/* Logo */}
           <Link href="/">
@@ -28,16 +28,16 @@ export default function Navbar() {
 
           {/* Desktop menu */}
           <div className="hidden md:flex space-x-5 items-center">
-            <Link href="#home">
+            <Link href="/#home">
               <div className="navbar-menu-link">Home</div>
             </Link>
-            <Link href="#about">
+            <Link href="/#about">
               <div className="navbar-menu-link">Tentang Kami</div>
             </Link>
-            <Link href="#menu">
+            <Link href="/#menu">
               <div className="navbar-menu-link">Menu</div>
             </Link>
-            <Link href="#contact">
+            <Link href="/#contact">
               <div className="navbar-menu-link">Kontak</div>
             </Link>
           </div>
