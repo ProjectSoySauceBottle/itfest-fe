@@ -23,10 +23,10 @@ export default function Hero() {
         </FadeIn>
         <FadeIn direction="right" delay={400}>
           <Link
-            href="#"
+            href="/menu"
             className="inline-block text-sm md:text-base py-4 px-8 md:py-4 md:px-10 bg-primary text-white rounded-lg"
           >
-            Beli Sekarang
+            Lihat Menu
           </Link>
         </FadeIn>
       </div>
