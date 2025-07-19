@@ -4,7 +4,7 @@ import Link from "next/link";
 import { CiSearch, CiShoppingCart } from "react-icons/ci";
 import { MdClose, MdMenu } from "react-icons/md";
 import { useDisclosure } from "@mantine/hooks";
-import { Drawer } from "@mantine/core";
+import { Drawer, Tooltip } from "@mantine/core";
 import { useRouter } from "next/navigation";
 
 export default function Navbar() {
@@ -45,19 +45,25 @@ export default function Navbar() {
           {/* Mobile menu button */}
           <div className="flex items-center">
             <div className="flex space-x-3">
-              <button
+              {/* <button
                 aria-label="Search"
                 className="hover:text-foreground focus:outline-none"
               >
                 <CiSearch size="20" />
-              </button>
+              </button> */}
 
-              <button
-                aria-label="Shopping Cart"
-                className="hover:text-foreground focus:outline-none"
+              <Tooltip
+                label="Riwayat Pesanan"
+                position="bottom"
+                events={{ hover: true, focus: true, touch: true }}
               >
-                <CiShoppingCart size="20" />
-              </button>
+                <button
+                  aria-label="Shopping Cart"
+                  className="hover:text-foreground focus:outline-none"
+                >
+                  <CiShoppingCart size="20" />
+                </button>
+              </Tooltip>
               <button
                 onClick={() => (opened ? close() : open())}
                 type="button"
