@@ -6,6 +6,8 @@ import { Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import React, { useState } from "react";
 import ModalMenu from "./Modal";
+import NotedMenu from "./NotedMenu";
+import { FaAngleDoubleLeft, FaArrowLeft } from "react-icons/fa";
 
 export default function AllMenus({ data, searchType = null }) {
   const [opened, { open, close }] = useDisclosure(false);
@@ -23,6 +25,9 @@ export default function AllMenus({ data, searchType = null }) {
         .map((item) => item.type)
     ),
   ];
+
+  // drawer open
+  const [drawerOpened, setDrawerOpened] = useState(false);
 
   const handleModalOpen = (item) => {
     setSelectedItem(item);
@@ -90,6 +95,10 @@ export default function AllMenus({ data, searchType = null }) {
 
   return (
     <>
+      <NotedMenu
+        drawerOpened={drawerOpened}
+        setDrawerOpened={setDrawerOpened}
+      />
       <ModalMenu opened={opened} close={close} item={selectedItem} />
       <div className="flex flex-col items-center">
         {dataType.length > 0 ? (
@@ -100,6 +109,12 @@ export default function AllMenus({ data, searchType = null }) {
           </div>
         )}
       </div>
+      <button
+        onClick={() => setDrawerOpened(true)}
+        className="fixed bottom-10 -right-8 bg-primary text-white border border-background size-[4rem] rounded-full cursor-pointer"
+      >
+        <FaAngleDoubleLeft size={20} className="ml-2" />
+      </button>
     </>
   );
 }

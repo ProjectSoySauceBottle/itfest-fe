@@ -7,6 +7,7 @@ import Navbar from "@/components/Homepage/Navbar/Navbar";
 import { MantineProvider } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
+import { cookies } from "next/headers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -63,7 +64,11 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const cookieStore = await cookies();
+  const tableNumber = cookieStore.get("table_number")?.value;
+  console.log(tableNumber, "nomor meja");
+
   return (
     <html lang="en">
       <body

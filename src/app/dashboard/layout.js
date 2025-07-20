@@ -1,14 +1,16 @@
+import DashboardAppShell from "@/components/Dashboard/Layout/DashboardAppShell";
+
 export const metadata = {
-  title: "Dashboard",
-  description: "",
+  title: {
+    default: "Soy Sauce Bottle Cafe",
+    template: "%s | Soy Sauce Bottle Cafe",
+  },
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 function DashboardLayout({ children }) {
-  return (
-    <div>
-      DashboardLayout
-      <main>{children}</main>
-    </div>
-  );
+  return <DashboardAppShell children={children} />;
 }
 export default DashboardLayout;

@@ -6,8 +6,11 @@ import { MdClose, MdMenu } from "react-icons/md";
 import { useDisclosure } from "@mantine/hooks";
 import { Drawer, Tooltip } from "@mantine/core";
 import { useRouter } from "next/navigation";
+import { TbRosetteFilled } from "react-icons/tb";
 
 export default function Navbar() {
+  const dummyTableNumber = 13;
+
   const [opened, { open, close }] = useDisclosure(false);
   const router = useRouter();
 
@@ -26,7 +29,6 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop menu */}
           <div className="hidden md:flex space-x-5 items-center">
             <Link href="/#home">
               <div className="navbar-menu-link">Home</div>
@@ -42,7 +44,6 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Mobile menu button */}
           <div className="flex items-center">
             <div className="flex space-x-3">
               {/* <button
@@ -53,13 +54,32 @@ export default function Navbar() {
               </button> */}
 
               <Tooltip
+                withArrow
+                label={
+                  <div>
+                    Nomor Meja Anda{" "}
+                    <span className="font-bold">{dummyTableNumber}</span>
+                  </div>
+                }
+                events={{ hover: true, focus: true, touch: true }}
+              >
+                <div className="relative">
+                  <TbRosetteFilled size="32" />
+                  <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-xs text-white z-10">
+                    {dummyTableNumber}
+                  </div>
+                </div>
+              </Tooltip>
+              <Tooltip
+                withArrow
                 label="Riwayat Pesanan"
                 position="bottom"
                 events={{ hover: true, focus: true, touch: true }}
               >
                 <button
+                  onClick={() => handleRoute("/my-order")}
                   aria-label="Shopping Cart"
-                  className="hover:text-foreground focus:outline-none"
+                  className="hover:text-foreground focus:outline-none cursor-pointer"
                 >
                   <CiShoppingCart size="20" />
                 </button>
