@@ -75,6 +75,8 @@ export default function ModalMenu({
 
     // Simpan ke localStorage
     localStorage.setItem("notedOrders", JSON.stringify(existingOrders));
+
+    window.dispatchEvent(new Event("totalOrder"));
     handleCloseModal();
   };
 

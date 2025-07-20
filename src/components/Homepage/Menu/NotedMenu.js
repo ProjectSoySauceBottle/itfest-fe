@@ -21,8 +21,14 @@ export default function NotedMenu({ drawerOpened, setDrawerOpened }) {
     const updatedOrders = notedOrders.filter((_, i) => i !== index);
     setNotedOrders(updatedOrders);
     localStorage.setItem("notedOrders", JSON.stringify(updatedOrders));
+    window.dispatchEvent(new Event("totalOrder"));
   };
-
+  const handleOrder = () => {
+    window.open(
+      "https://app.sandbox.midtrans.com/payment-links/1753030776776",
+      "_blank"
+    );
+  };
   return (
     <Drawer
       opened={drawerOpened}
@@ -86,7 +92,14 @@ export default function NotedMenu({ drawerOpened, setDrawerOpened }) {
           </div>
         </div>
 
-        <Button fullWidth color="blue" radius="md" size="md" mt="sm">
+        <Button
+          onClick={handleOrder}
+          fullWidth
+          color="blue"
+          radius="md"
+          size="md"
+          mt="sm"
+        >
           Pesan Sekarang
         </Button>
       </div>
