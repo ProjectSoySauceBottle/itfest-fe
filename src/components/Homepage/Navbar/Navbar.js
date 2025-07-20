@@ -76,13 +76,13 @@ export default function Navbar() {
                 position="bottom"
                 events={{ hover: true, focus: true, touch: true }}
               >
-                <button
-                  onClick={() => handleRoute("/my-order")}
+                <Link
+                  href="/my-order"
                   aria-label="Shopping Cart"
-                  className="hover:text-foreground focus:outline-none cursor-pointer"
+                  className="hover:text-foreground my-auto focus:outline-none cursor-pointer"
                 >
                   <CiShoppingCart size="20" />
-                </button>
+                </Link>
               </Tooltip>
               <button
                 onClick={() => (opened ? close() : open())}

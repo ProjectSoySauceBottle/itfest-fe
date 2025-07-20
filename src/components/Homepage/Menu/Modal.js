@@ -1,19 +1,39 @@
 import { Modal, NumberInput, TextInput, Tooltip } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useEffect } from "react";
 import { GiNotebook } from "react-icons/gi";
 
-export default function ModalMenu({ opened, close, item }) {
+export default function ModalMenu({
+  opened,
+  close,
+  item = null,
+  setSelectedItem,
+}) {
   const form = useForm({
     initialValues: {
-      product_id: item?.id,
-      price: item?.price,
-      name: item?.name,
-      image_url: item?.image_url,
-      type: item?.type,
-      total_price: item?.price,
+      id: "",
+      price: 0,
+      name: "",
+      image_url: "",
+      type: "",
+      total_price: 0,
       quantity: 1,
     },
   });
+
+  useEffect(() => {
+    if (item) {
+      form.setValues({
+        id: item.id,
+        name: item.name,
+        image_url: item.image_url,
+        type: item.type,
+        price: Number(item.price),
+        quantity: 1,
+        total_price: item.price,
+      });
+    }
+  }, [item]);
 
   const handleChangeQty = (value) => {
     if (value == null || value == "" || value == 0) {
@@ -21,11 +41,41 @@ export default function ModalMenu({ opened, close, item }) {
     } else {
       form.setFieldValue("quantity", value);
     }
+
+    form.setFieldValue("total_price", value * form.values.price);
   };
 
   const handleCloseModal = () => {
     form.reset();
+    setSelectedItem(null);
     close();
+  };
+
+  const handleSaveToLocal = () => {
+    const existingOrders =
+      JSON.parse(localStorage.getItem("notedOrders")) || [];
+    const newOrder = form.values;
+
+    // cek ada ga item dengan id yang sama
+    const existingIndex = existingOrders.findIndex(
+      (order) => order.id === newOrder.id
+    );
+
+    if (existingIndex !== -1) {
+      // kalo ada update qty dan total_price
+      const existingItem = existingOrders[existingIndex];
+      existingItem.quantity += newOrder.quantity;
+      existingItem.total_price = existingItem.quantity * existingItem.price;
+
+      existingOrders[existingIndex] = existingItem;
+    } else {
+      // kalo belom ada tambahin sebagai item baru
+      existingOrders.push(newOrder);
+    }
+
+    // Simpan ke localStorage
+    localStorage.setItem("notedOrders", JSON.stringify(existingOrders));
+    handleCloseModal();
   };
 
   return (
@@ -51,7 +101,7 @@ export default function ModalMenu({ opened, close, item }) {
           />
           <h3 className="font-semibold mt-4">{item?.name}</h3>
           <p className="text-gray-600">
-            Rp{Number(item?.price).toLocaleString("id-ID")}
+            Rp{item?.price && Number(item?.price).toLocaleString("id-ID")}
           </p>
 
           <form className="mt-4 space-y-2">
@@ -70,14 +120,12 @@ export default function ModalMenu({ opened, close, item }) {
               <TextInput
                 type="number"
                 placeholder="0"
-                value={Number(
-                  item?.price * form.values.quantity
-                ).toLocaleString("id-ID")}
-                onChange={() =>
-                  form.setFieldValue(
-                    "total_price",
-                    item?.price * form.values.quantity
-                  )
+                value={
+                  item?.price
+                    ? Number(item?.price * form.values.quantity).toLocaleString(
+                        "id-ID"
+                      )
+                    : 0
                 }
                 readOnly
                 disabled
@@ -104,7 +152,10 @@ export default function ModalMenu({ opened, close, item }) {
               defaultOpened="true"
               transitionProps={{ transition: "fade-up", duration: 200 }}
             >
-              <button className="w-2/4 cursor-pointer p-2 bg-white border border-primary rounded-md">
+              <button
+                onClick={handleSaveToLocal}
+                className="w-2/4 cursor-pointer p-2 bg-white border border-primary rounded-md"
+              >
                 <GiNotebook size="20" className="mx-auto" />
               </button>
             </Tooltip>

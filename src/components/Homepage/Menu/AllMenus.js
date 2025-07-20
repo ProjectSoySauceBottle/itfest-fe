@@ -36,7 +36,7 @@ export default function AllMenus({ data, searchType = null }) {
 
   const Card = ({ type }) => {
     return (
-      <div key={type} className="mt-20 w-full">
+      <div key={type} className="mt-20 w-full cursor-pointer">
         <h2 className="text-xl font-bold mb-4 capitalize">{type}</h2>
         {data.filter((item) => item.type === type)?.length > 0 ? (
           <div className="hidden sm:grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -99,7 +99,12 @@ export default function AllMenus({ data, searchType = null }) {
         drawerOpened={drawerOpened}
         setDrawerOpened={setDrawerOpened}
       />
-      <ModalMenu opened={opened} close={close} item={selectedItem} />
+      <ModalMenu
+        opened={opened}
+        close={close}
+        item={selectedItem}
+        setSelectedItem={setSelectedItem}
+      />
       <div className="flex flex-col items-center">
         {dataType.length > 0 ? (
           dataType.map((type, index) => <Card key={type} type={type} />)
