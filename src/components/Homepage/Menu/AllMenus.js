@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import ModalMenu from "./Modal";
 import NotedMenu from "./NotedMenu";
 import { FaAngleDoubleLeft, FaArrowLeft } from "react-icons/fa";
+import { GiNotebook } from "react-icons/gi";
 
 export default function AllMenus({ data, searchType = null }) {
   const [notedOrdersTotal, setNotedOrdersTotal] = useState(null);
@@ -138,7 +139,7 @@ export default function AllMenus({ data, searchType = null }) {
         onClick={() => setDrawerOpened(true)}
         className="fixed bottom-10 -right-8 bg-primary text-white border border-background size-[4rem] rounded-full cursor-pointer"
       >
-        <FaAngleDoubleLeft size={20} className="ml-2" />
+        <GiNotebook size={20} className="ml-2" />
         {notedOrdersTotal > 0 && (
           <span className="absolute -bottom-2 left-2 text-white bg-red-500 rounded-full p-1 size-5 flex justify-center items-center text-[10px]">
             {notedOrdersTotal}

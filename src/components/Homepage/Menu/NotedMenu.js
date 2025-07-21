@@ -65,7 +65,7 @@ export default function NotedMenu({ drawerOpened, setDrawerOpened }) {
                 <div className="text-desc text-xs">
                   Jumlah: x{item.quantity}
                 </div>
-                <div className="font-semibold text-accent text-sm">
+                <div className="font-semibold text-sm">
                   Total: Rp{item.total_price.toLocaleString("id-ID")}
                 </div>
               </div>
@@ -95,7 +95,7 @@ export default function NotedMenu({ drawerOpened, setDrawerOpened }) {
         <Button
           onClick={handleOrder}
           fullWidth
-          color="blue"
+          color="var(--primary)"
           radius="md"
           size="md"
           mt="sm"
