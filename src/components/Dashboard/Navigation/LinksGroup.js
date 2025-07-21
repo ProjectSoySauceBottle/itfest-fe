@@ -34,8 +34,8 @@ const LinksGroup = ({ icon, label, initiallyOpened, links, path, divider }) => {
           component="a"
           className={`${classes.link} ${
             url?.split("?")[0] === link.link
-              ? "bg-sky-100 !border-solid !border-r-4 !border-sky-500"
-              : "!bg-white dark:!bg-slate-800"
+              ? "bg-[#d7ebea] !border-solid !border-r-4 !border-[#1ad8e2]"
+              : "!bg-[#0bbfcd] dark:!bg-slate-800 !text-white"
           } hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-400 transition duration-200`}
           href={link.link}
           key={link.label}
@@ -53,8 +53,8 @@ const LinksGroup = ({ icon, label, initiallyOpened, links, path, divider }) => {
         onClick={() => setOpened((o) => !o)}
         className={`${classes.control} ${
           url?.split("?")[0] == path
-            ? "!bg-gradient-to-l from-sky-100 to-sky-200 !border-solid !border-r-4 !border-l-2 !border-sky-500 dark:!bg-none"
-            : "!bg-white dark:!bg-slate-800"
+            ? "!bg-gradient-to-l from-[#d7ebea] to-[#d7ebea] !border-solid !border-r-4 !border-l-2 !border-[#1ad8e2] dark:!bg-none !text-primary"
+            : "!bg-[#0bbfcd] dark:!bg-slate-800 !text-white"
         } hover:bg-slate-100 dark:bg-slate-800 dark:text-white transition duration-200`}
       >
         <Group
@@ -65,7 +65,7 @@ const LinksGroup = ({ icon, label, initiallyOpened, links, path, divider }) => {
           gap={0}
         >
           <Box className="flex items-center">
-            <ThemeIcon variant="light" size={30}>
+            <ThemeIcon variant="filled" color="#96dae2" size={30}>
               {icon}
             </ThemeIcon>
             <Box ml={"md"}>{label}</Box>

@@ -27,8 +27,8 @@ export default function DashboardAppShell({ children }) {
         <Sidebar />
       </AppShell.Navbar>
 
-      <AppShell.Main className="bg-[#f5f5f9]">
-        <div className="w-full h-12 bg-white rounded-md shadow flex justify-between items-center mb-5 transition duration-200">
+      <AppShell.Main className="bg-[#e3f7f9]">
+        <div className="w-full h-12 bg-[#0bbfcd] rounded-md shadow flex justify-between items-center mb-5 transition duration-200">
           <DashboardNavbar toggle={toggle} opened={opened} />
         </div>
         <div>{children}</div>

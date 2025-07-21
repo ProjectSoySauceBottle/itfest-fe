@@ -8,6 +8,7 @@ import { LuNotepadText } from "react-icons/lu";
 import LinksGroup from "./LinksGroup";
 import { MdDashboard } from "react-icons/md";
 import { RiAlignItemLeftFill } from "react-icons/ri";
+import { GiNotebook } from "react-icons/gi";
 
 export default function Sidebar() {
   const mockdata = [
@@ -18,30 +19,23 @@ export default function Sidebar() {
       permission: ["admin", "provider", "user"],
     },
     {
-      label: "User",
-      icon: <FaUsers />,
-      path: "/dashboard/users",
-      permission: ["admin"],
-    },
-    {
       label: "Pesanan User",
-      icon: <LuNotepadText />,
-      path: "/dashboard/order-users",
+      icon: <GiNotebook />,
+      path: "/dashboard/order-user",
       permission: ["admin"],
     },
     {
-      divider: "Pembatas",
-      label: "Dropdown",
-      icon: <RiAlignItemLeftFill />,
+      divider: "Manajemen",
+      label: "Manajemen Meja",
+      icon: <FaBook />,
       links: [
         {
-          label: "Item1",
-          link: "/dashboard/item1",
+          label: "Manajemen Meja",
+          link: "/dashboard/table",
         },
         {
-          divider: "Pembatas2",
-          label: "Item2",
-          link: "/dashboard/item2",
+          label: "Manajemen Menu",
+          link: "/dashboard/menu",
         },
       ],
       permission: ["admin"],
@@ -53,7 +47,7 @@ export default function Sidebar() {
   ));
   return (
     <nav
-      className={`${classes.navbar} md:shadow h-full dark:bg-slate-800 dark:text-white transition-all duration-200`}
+      className={`${classes.navbar} md:shadow h-full transition-all duration-200`}
     >
       <div className={classes.header}>
         <Group justify="center">
