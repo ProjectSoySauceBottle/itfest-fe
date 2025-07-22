@@ -1,68 +1,68 @@
-import { Group, ScrollArea } from "@mantine/core";
-import React from "react";
-import classes from "@/styles/SidebarStyle.module.css";
-import { useEffect } from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { FaBook, FaDashcube, FaUsers } from "react-icons/fa";
-import { LuNotepadText } from "react-icons/lu";
-import LinksGroup from "./LinksGroup";
-import { MdDashboard } from "react-icons/md";
-import { RiAlignItemLeftFill } from "react-icons/ri";
-import { GiNotebook } from "react-icons/gi";
+import { MdDashboard, MdTableBar } from "react-icons/md";
+import { GiNotebook, GiTable } from "react-icons/gi";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { RiPieChart2Fill } from "react-icons/ri";
+import { LuNotebookText } from "react-icons/lu";
 
 export default function Sidebar() {
+  const activePath = usePathname();
+
   const mockdata = [
     {
-      label: "Dashboard",
-      icon: <MdDashboard />,
+      label: "Overview",
+      icon: <RiPieChart2Fill />,
       path: "/dashboard",
-      permission: ["admin", "provider", "user"],
     },
     {
-      label: "Pesanan User",
+      label: "Orders",
       icon: <GiNotebook />,
       path: "/dashboard/order-user",
-      permission: ["admin"],
     },
     {
-      divider: "Manajemen",
-      label: "Manajemen Meja",
-      icon: <FaBook />,
-      links: [
-        {
-          label: "Manajemen Meja",
-          link: "/dashboard/table",
-        },
-        {
-          label: "Manajemen Menu",
-          link: "/dashboard/menu",
-        },
-      ],
-      permission: ["admin"],
+      label: "Tables",
+      icon: <MdTableBar />,
+      path: "/dashboard/table",
+    },
+    {
+      label: "Menus",
+      icon: <LuNotebookText />,
+      path: "/dashboard/menu",
     },
   ];
 
-  const links = mockdata.map((item) => (
-    <LinksGroup {...item} key={item.label} />
-  ));
   return (
-    <nav
-      className={`${classes.navbar} md:shadow h-full transition-all duration-200`}
-    >
-      <div className={classes.header}>
-        <Group justify="center">
-          <div className="font-bold dark:text-slate-500">SSBC</div>
-        </Group>
-      </div>
+    <nav className="h-full py-6 px-12 font-poppins">
+      <h1 className="font-bold italic text-2xl text-center">
+        SSB<span className="text-desc">Cafe</span>
+      </h1>
 
-      <ScrollArea
-        scrollbarSize={1}
-        offsetScrollbars
-        scrollHideDelay={500}
-        className={classes.links}
-      >
-        <div className={classes.linksInner}>{links}</div>
-      </ScrollArea>
+      <ul className="mt-10 space-y-4">
+        {mockdata.map((item, index) => {
+          return (
+            <li key={index}>
+              <Link
+                href={item.path}
+                className={`group flex items-center font-[500] p-2 text-sm rounded-lg hover:text-accent transition duration-300 ${
+                  activePath === item.path
+                    ? "text-accent font-semibold"
+                    : "text-desc/80"
+                }`}
+              >
+                {React.cloneElement(item.icon, {
+                  className:
+                    activePath === item.path
+                      ? "size-5 text-accent-hover"
+                      : "size-5 text-desc/80 group-hover:text-accent-hover transition duration-300",
+                })}
+                <span className="ml-5">{item.label}</span>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
     </nav>
   );
 }

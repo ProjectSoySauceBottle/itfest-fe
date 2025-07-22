@@ -1,10 +1,10 @@
-import { Burger, Button, Drawer, Flex, Image, Menu, Text } from "@mantine/core";
+import { Burger, Drawer, Flex, Image, Menu, Text } from "@mantine/core";
 import React from "react";
 import Sidebar from "./Sidebar";
 import { useRouter } from "next/navigation";
-import { FaHome, FaRegUser, FaUser } from "react-icons/fa";
+import { FaRegUser } from "react-icons/fa";
 import { TbLogout2 } from "react-icons/tb";
-import { RiHome3Line, RiHome9Line } from "react-icons/ri";
+import { RiHome3Line } from "react-icons/ri";
 
 const DashboardNavbar = ({ toggle, opened, darkMode }) => {
   const profile = "assets/images/dummy_profile.jpg";
