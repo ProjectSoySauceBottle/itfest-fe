@@ -3,6 +3,7 @@ import "./globals.css";
 import "@mantine/notifications/styles.css";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
+import "@mantine/charts/styles.css";
 import Navbar from "@/components/Homepage/Navbar/Navbar";
 import { MantineProvider } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
