@@ -1,5 +1,5 @@
 "use client";
-import { Avatar, Button, Checkbox } from "@mantine/core";
+import { Avatar, Badge, Button, Checkbox } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import Filter from "./Filter";
 import { useForm } from "@mantine/form";
@@ -20,7 +20,7 @@ export default function Tableview() {
   const [selectedIds, setSelectedIds] = useState([]);
   const handleSelectAll = (event) => {
     if (event.currentTarget.checked) {
-      const allIds = data?.map((item) => item.id);
+      const allIds = data.map((item) => item.id);
       setSelectedIds(allIds);
     } else {
       setSelectedIds([]);
@@ -36,7 +36,8 @@ export default function Tableview() {
   const filter = useForm({
     initialValues: {
       search: "",
-      category: "",
+      searchTable: "",
+      status: "",
       page: 1,
       limit: 5,
     },
@@ -45,127 +46,83 @@ export default function Tableview() {
     const rawData = [
       {
         id: 1,
-        name: "Espresso",
-        price: 20000,
-        type: "coffee",
-        image_url: "/assets/images/menu/Espresso.jpg",
-        description: "desc",
+        table: {
+          id: 3,
+          tableNumber: "3",
+          qr_code_path: "/assets/images/qrcode.png",
+        },
+        menu: {
+          id: 1,
+          name: "Espresso",
+          price: 20000,
+          type: "coffee",
+          image_url: "/assets/images/menu/Espresso.jpg",
+          description: "desc",
+        },
+        status: "pending",
+        quantity: 2,
+        total_price: 40000,
+        payment_method: "qris",
       },
       {
         id: 2,
-        name: "Americano",
-        price: 25000,
-        type: "coffee",
-        image_url: "/assets/images/menu/Americano.jpg",
-        description: "desc",
+        table: {
+          id: 4,
+          tableNumber: "4",
+          qr_code_path: "/assets/images/qrcode.png",
+        },
+        menu: {
+          id: 2,
+          name: "Americano",
+          price: 25000,
+          type: "coffee",
+          image_url: "/assets/images/menu/Americano.jpg",
+          description: "desc",
+        },
+        status: "delivered",
+        quantity: 1,
+        total_price: 25000,
+        payment_method: "qris",
       },
       {
         id: 3,
-        name: "Latte",
-        price: 25000,
-        type: "coffee",
-        image_url: "/assets/images/menu/Latte.jpg",
-        description: "desc",
+        table: {
+          id: 6,
+          tableNumber: "6",
+          qr_code_path: "/assets/images/qrcode.png",
+        },
+        menu: {
+          id: 1,
+          name: "Espresso",
+          price: 20000,
+          type: "coffee",
+          image_url: "/assets/images/menu/Espresso.jpg",
+          description: "desc",
+        },
+        status: "pending",
+        quantity: 1,
+        total_price: 20000,
+        payment_method: "cash",
       },
       {
         id: 4,
-        name: "Flat White",
-        price: 25000,
-        type: "coffee",
-        image_url: "/assets/images/menu/Flat White.jpg",
-        description: "desc",
-      },
-      {
-        id: 5,
-        name: "Mocha",
-        price: 30000,
-        type: "coffee",
-        image_url: "/assets/images/menu/Mocha.jpg",
-        description: "desc",
-      },
-      {
-        id: 6,
-        name: "Macchiato",
-        price: 20000,
-        type: "coffee",
-        image_url: "/assets/images/menu/Macchiato.jpg",
-        description: "desc",
-      },
-
-      // Non-Coffee
-      {
-        id: 7,
-        name: "Chocolate Milk",
-        price: 22000,
-        type: "non-coffee",
-        image_url: "/assets/images/menu/Chocolate Milk.jpg",
-        description: "desc",
-      },
-      {
-        id: 8,
-        name: "Strawberry Smoothie",
-        price: 28000,
-        type: "non-coffee",
-        image_url: "/assets/images/menu/Strawberry Smoothie.jpg",
-        description: "desc",
-      },
-      {
-        id: 9,
-        name: "Matcha Latte",
-        price: 26000,
-        type: "non-coffee",
-        image_url: "/assets/images/menu/Matcha Latte.jpg",
-        description: "desc",
-      },
-      {
-        id: 10,
-        name: "Green Tea",
-        price: 18000,
-        type: "non-coffee",
-        image_url: "/assets/images/menu/Green Tea.jpg",
-        description: "desc",
-      },
-      {
-        id: 11,
-        name: "Lemon Tea",
-        price: 20000,
-        type: "non-coffee",
-        image_url: "/assets/images/menu/Lemon Tea.jpg",
-        description: "desc",
-      },
-      {
-        id: 12,
-        name: "Chamomile Tea",
-        price: 22000,
-        type: "non-coffee",
-        image_url: "/assets/images/menu/Chamomile Tea.jpg",
-        description: "desc",
-      },
-
-      // Snack
-      {
-        id: 13,
-        name: "Croissant",
-        price: 15000,
-        type: "snack",
-        image_url: "/assets/images/menu/Croissant.jpg",
-        description: "desc",
-      },
-      {
-        id: 14,
-        name: "Cheesecake",
-        price: 30000,
-        type: "snack",
-        image_url: "/assets/images/menu/Cheesecake.jpg",
-        description: "desc",
-      },
-      {
-        id: 15,
-        name: "French Fries",
-        price: 18000,
-        type: "snack",
-        image_url: "/assets/images/menu/French Fries.jpg",
-        description: "desc",
+        table: {
+          id: 1,
+          tableNumber: "1",
+          qr_code_path: "/assets/images/qrcode.png",
+        },
+        menu: {
+          id: 13,
+          name: "Croissant",
+          price: 15000,
+          type: "snack",
+          image_url: "/assets/images/menu/Croissant.jpg",
+          description: "desc",
+        },
+        status: "delivered",
+        quantity: 2,
+        total_price: 30000,
+        payment_method: "qris",
       },
     ];
     setRaw(rawData);
@@ -174,15 +131,19 @@ export default function Tableview() {
 
   useEffect(() => {
     const filteredData = raw.filter((item) => {
-      const matchName = item.name
+      const matchName = item?.menu?.name
         ?.toLowerCase()
         .includes(filter.values.search?.toLowerCase());
 
-      const matchCategory = filter.values.category
-        ? item.type.toLowerCase() === filter.values.category.toLowerCase()
+      const matchTableNumber = item.table.tableNumber.includes(
+        filter.values.searchTable
+      );
+
+      const matchStatus = filter.values.status
+        ? item.status === filter.values.status
         : true;
 
-      return matchName && matchCategory;
+      return matchName && matchTableNumber && matchStatus;
     });
 
     const start = (filter.values.page - 1) * filter.values.limit;
@@ -197,7 +158,8 @@ export default function Tableview() {
     setData(filteredData.slice(start, end));
   }, [
     filter.values.search,
-    filter.values.category,
+    filter.values.searchTable,
+    filter.values.status,
     filter.values.page,
     filter.values.limit,
     raw,
@@ -230,26 +192,38 @@ export default function Tableview() {
               <FaRegTrashCan size={18} />
             </Button>
           ) : (
-            "Nama"
+            "Nomor Meja"
           )}
         </th>
         <th
           scope="col"
           className="px-6 py-3 text-left text-xs font-medium text-desc uppercase tracking-wider"
         >
-          Harga
+          Nama Menu
         </th>
         <th
           scope="col"
           className="px-6 py-3 text-left text-xs font-medium text-desc uppercase tracking-wider"
         >
-          Kategori
+          Jumlah Pesanan
         </th>
         <th
           scope="col"
           className="px-6 py-3 text-left text-xs font-medium text-desc uppercase tracking-wider"
         >
-          Deskripsi
+          Total Harga
+        </th>
+        <th
+          scope="col"
+          className="px-6 py-3 text-left text-xs font-medium text-desc uppercase tracking-wider"
+        >
+          Metode Bayar
+        </th>
+        <th
+          scope="col"
+          className="px-6 py-3 text-left text-xs font-medium text-desc uppercase tracking-wider"
+        >
+          Status
         </th>
         <th
           scope="col"
@@ -271,15 +245,21 @@ export default function Tableview() {
                 onChange={() => handleSelectRow(item.id)}
               />
             </td>
-            <td className="px-6 py-4 flex justify-start gap-2 items-center">
-              <Avatar radius="xs" size="lg" src={item.image_url} />
-              {item.name}
-            </td>
+            <td className="px-6 py-4">#{item?.table?.tableNumber}</td>
+            <td className="px-6 py-4">{item?.menu?.name}</td>
+            <td className="px-6 py-4">{item?.quantity}</td>
             <td className="px-6 py-4">
-              Rp{item.price.toLocaleString("id-ID")}
+              Rp{item?.total_price?.toLocaleString("id-ID")}
             </td>
-            <td className="px-6 py-4">{item.type}</td>
-            <td className="px-6 py-4">{item.description}</td>
+            <td className="px-6 py-4">{item?.payment_method}</td>
+            <td className="px-6 py-4">
+              <Badge
+                variant="light"
+                color={item?.status == "pending" ? "yellow" : "green"}
+              >
+                {item?.status}
+              </Badge>
+            </td>
             <td>
               <ActionButton item={item} />
             </td>
@@ -287,7 +267,7 @@ export default function Tableview() {
         ))
       ) : (
         <tr>
-          <td colSpan={5} className="text-center py-4">
+          <td colSpan={10} className="text-center py-4">
             Data Tidak Ditemukan
           </td>
         </tr>
@@ -298,12 +278,7 @@ export default function Tableview() {
   return (
     <div className="bg-white rounded-xl shadow p-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-primary">Menu</h1>
-        <Link href="/dashboard/menu/create">
-          <Button>
-            <FiPlus size={18} /> Buat
-          </Button>
-        </Link>
+        <h1 className="text-2xl font-bold text-primary">Pesanan User</h1>
       </div>
       <Filter filter={filter} />
       <div className="mt-5 overflow-x-auto">
