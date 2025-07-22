@@ -1,7 +1,7 @@
 import FormControl from "@/components/Dashboard/Menu/FormControl";
 import React from "react";
 
-export default async function CreateMenuPage({ params }) {
+export default async function EditMenuPage({ params }) {
   const { id } = await params;
   const data = {
     id: 1,

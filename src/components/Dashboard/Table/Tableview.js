@@ -8,6 +8,7 @@ import ActionButton, { handleModalDeleteAll } from "./ActionButton";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { FiPlus } from "react-icons/fi";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Tableview() {
   const [raw, setRaw] = useState([]);
@@ -36,7 +37,6 @@ export default function Tableview() {
   const filter = useForm({
     initialValues: {
       search: "",
-      category: "",
       page: 1,
       limit: 5,
     },
@@ -45,127 +45,33 @@ export default function Tableview() {
     const rawData = [
       {
         id: 1,
-        name: "Espresso",
-        price: 20000,
-        type: "coffee",
-        image_url: "/assets/images/menu/Espresso.jpg",
-        description: "desc",
+        tableNumber: "1",
+        qr_code_path: "/assets/images/qrcode.png",
       },
       {
         id: 2,
-        name: "Americano",
-        price: 25000,
-        type: "coffee",
-        image_url: "/assets/images/menu/Americano.jpg",
-        description: "desc",
+        tableNumber: "2",
+        qr_code_path: "/assets/images/qrcode.png",
       },
       {
         id: 3,
-        name: "Latte",
-        price: 25000,
-        type: "coffee",
-        image_url: "/assets/images/menu/Latte.jpg",
-        description: "desc",
+        tableNumber: "3",
+        qr_code_path: "/assets/images/qrcode.png",
       },
       {
         id: 4,
-        name: "Flat White",
-        price: 25000,
-        type: "coffee",
-        image_url: "/assets/images/menu/Flat White.jpg",
-        description: "desc",
+        tableNumber: "4",
+        qr_code_path: "/assets/images/qrcode.png",
       },
       {
         id: 5,
-        name: "Mocha",
-        price: 30000,
-        type: "coffee",
-        image_url: "/assets/images/menu/Mocha.jpg",
-        description: "desc",
+        tableNumber: "5",
+        qr_code_path: "/assets/images/qrcode.png",
       },
       {
         id: 6,
-        name: "Macchiato",
-        price: 20000,
-        type: "coffee",
-        image_url: "/assets/images/menu/Macchiato.jpg",
-        description: "desc",
-      },
-
-      // Non-Coffee
-      {
-        id: 7,
-        name: "Chocolate Milk",
-        price: 22000,
-        type: "non-coffee",
-        image_url: "/assets/images/menu/Chocolate Milk.jpg",
-        description: "desc",
-      },
-      {
-        id: 8,
-        name: "Strawberry Smoothie",
-        price: 28000,
-        type: "non-coffee",
-        image_url: "/assets/images/menu/Strawberry Smoothie.jpg",
-        description: "desc",
-      },
-      {
-        id: 9,
-        name: "Matcha Latte",
-        price: 26000,
-        type: "non-coffee",
-        image_url: "/assets/images/menu/Matcha Latte.jpg",
-        description: "desc",
-      },
-      {
-        id: 10,
-        name: "Green Tea",
-        price: 18000,
-        type: "non-coffee",
-        image_url: "/assets/images/menu/Green Tea.jpg",
-        description: "desc",
-      },
-      {
-        id: 11,
-        name: "Lemon Tea",
-        price: 20000,
-        type: "non-coffee",
-        image_url: "/assets/images/menu/Lemon Tea.jpg",
-        description: "desc",
-      },
-      {
-        id: 12,
-        name: "Chamomile Tea",
-        price: 22000,
-        type: "non-coffee",
-        image_url: "/assets/images/menu/Chamomile Tea.jpg",
-        description: "desc",
-      },
-
-      // Snack
-      {
-        id: 13,
-        name: "Croissant",
-        price: 15000,
-        type: "snack",
-        image_url: "/assets/images/menu/Croissant.jpg",
-        description: "desc",
-      },
-      {
-        id: 14,
-        name: "Cheesecake",
-        price: 30000,
-        type: "snack",
-        image_url: "/assets/images/menu/Cheesecake.jpg",
-        description: "desc",
-      },
-      {
-        id: 15,
-        name: "French Fries",
-        price: 18000,
-        type: "snack",
-        image_url: "/assets/images/menu/French Fries.jpg",
-        description: "desc",
+        tableNumber: "6",
+        qr_code_path: "/assets/images/qrcode.png",
       },
     ];
     setRaw(rawData);
@@ -174,15 +80,9 @@ export default function Tableview() {
 
   useEffect(() => {
     const filteredData = raw.filter((item) => {
-      const matchName = item.name
-        ?.toLowerCase()
-        .includes(filter.values.search?.toLowerCase());
+      const matchNumber = item.tableNumber.includes(filter.values.search);
 
-      const matchCategory = filter.values.category
-        ? item.type.toLowerCase() === filter.values.category.toLowerCase()
-        : true;
-
-      return matchName && matchCategory;
+      return matchNumber;
     });
 
     const start = (filter.values.page - 1) * filter.values.limit;
@@ -195,13 +95,7 @@ export default function Tableview() {
     });
 
     setData(filteredData.slice(start, end));
-  }, [
-    filter.values.search,
-    filter.values.category,
-    filter.values.page,
-    filter.values.limit,
-    raw,
-  ]);
+  }, [filter.values.search, filter.values.page, filter.values.limit, raw]);
 
   const thead = (
     <thead>
@@ -230,26 +124,14 @@ export default function Tableview() {
               <FaRegTrashCan size={18} />
             </Button>
           ) : (
-            "Nama"
+            "Nomor Meja"
           )}
         </th>
         <th
           scope="col"
           className="px-6 py-3 text-left text-xs font-medium text-desc uppercase tracking-wider"
         >
-          Harga
-        </th>
-        <th
-          scope="col"
-          className="px-6 py-3 text-left text-xs font-medium text-desc uppercase tracking-wider"
-        >
-          Kategori
-        </th>
-        <th
-          scope="col"
-          className="px-6 py-3 text-left text-xs font-medium text-desc uppercase tracking-wider"
-        >
-          Deskripsi
+          Kode QR
         </th>
         <th
           scope="col"
@@ -271,15 +153,18 @@ export default function Tableview() {
                 onChange={() => handleSelectRow(item.id)}
               />
             </td>
-            <td className="px-6 py-4 flex justify-start gap-2 items-center">
-              <Avatar radius="xs" size="lg" src={item.image_url} />
-              {item.name}
-            </td>
+            <td className="px-6 py-4 text-lg">#{item.tableNumber}</td>
             <td className="px-6 py-4">
-              Rp{item.price.toLocaleString("id-ID")}
+              <div className="relative size-32">
+                <Image
+                  src={item.qr_code_path}
+                  alt={item.tableNumber}
+                  fill
+                  sizes="full"
+                  className="object-cover"
+                />
+              </div>
             </td>
-            <td className="px-6 py-4">{item.type}</td>
-            <td className="px-6 py-4">{item.description}</td>
             <td>
               <ActionButton item={item} />
             </td>
@@ -298,8 +183,8 @@ export default function Tableview() {
   return (
     <div className="bg-white rounded-xl shadow p-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-primary">Menu</h1>
-        <Link href="/dashboard/menu/create">
+        <h1 className="text-2xl font-bold text-primary">Meja</h1>
+        <Link href="/dashboard/table/create">
           <Button>
             <FiPlus size={18} /> Buat
           </Button>

@@ -21,40 +21,29 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { notifications } from "@mantine/notifications";
 
-export default function FormControl({ menu = null }) {
+export default function FormControl({ table = null }) {
   const form = useForm({
     initialValues: {
-      name: menu?.name || "",
-      type: menu?.type || "",
-      price: menu?.price || null,
-      image_url: menu?.image_url || null,
-      description: menu?.description || "",
+      tableNumber: table?.tableNumber || "",
     },
     validate: {
-      name: (value) =>
-        value.length < 2 ? "Nama harus terdiri dari 2 huruf" : null,
-      type: (value) => (value.length < 1 ? "Kategori harus diisi" : null),
-      price: (value) => (value < 1 ? "Harga harus lebih besar dari 0" : null),
-      description: (value) =>
-        value.length < 1 ? "Deskripsi harus diisi" : null,
+      tableNumber: (value) =>
+        value.length < 1 ? "Nomor meja harus diisi" : null,
     },
   });
-  const [file, setFile] = useState(null);
 
   const router = useRouter();
   const handleCancel = () => {
     form.reset();
-    setFile(null);
-    router.push("/dashboard/menu");
+    router.push("/dashboard/table");
   };
 
   const handleSubmit = () => {
-    form.setFieldValue("image_url", file);
     try {
       const res = true;
       notifications.show({
         title: "Success",
-        message: `Berhasil membuat menu baru`,
+        message: `Berhasil membuat data meja baru`,
         icon: <IoCheckmarkOutline size={18} />,
         color: "green",
         autoClose: true,
@@ -62,7 +51,7 @@ export default function FormControl({ menu = null }) {
     } catch (error) {
       notifications.show({
         title: "Failed",
-        message: `Gagal membuat menu baru`,
+        message: `Gagal membuat data meja baru`,
         icon: <RiCloseLargeFill size={18} />,
         color: "green",
         autoClose: true,
@@ -70,8 +59,7 @@ export default function FormControl({ menu = null }) {
     }
 
     form.reset();
-    setFile(null);
-    router.push("/dashboard/menu");
+    router.push("/dashboard/table");
   };
 
   const removeFile = () => {
@@ -82,16 +70,16 @@ export default function FormControl({ menu = null }) {
     <div className="border border-desc text-center rounded-lg overflow-hidden">
       <div className="relative w-full h-64">
         <Image
-          src={menu?.image_url}
+          src={table?.image_url}
           alt="image"
           fill
           sizes="full"
           className="object-cover"
         />
       </div>
-      <Tooltip label={menu?.name}>
+      <Tooltip label={table?.name}>
         <div className="py-3 text-sm text-center border-t border-b">
-          {menu?.name}
+          {table?.name}
         </div>
       </Tooltip>
       <Dropzone
@@ -143,54 +131,14 @@ export default function FormControl({ menu = null }) {
   return (
     <form onSubmit={form.onSubmit(handleSubmit)} className="mt-4">
       <div className="grid grid-cols-2 gap-4">
-        <TextInput
-          label={<div className="text-primary">Nama Menu</div>}
-          placeholder="Nama Menu"
-          {...form.getInputProps("name")}
-        />
         <NumberInput
           hideControls
-          label={<div className="text-primary">Harga</div>}
-          placeholder="0"
+          label={<div className="text-primary">Nomor Meja</div>}
+          placeholder="1"
           decimalSeparator=","
           thousandSeparator="."
-          leftSection={<div className="text-primary text-sm">Rp</div>}
-          {...form.getInputProps("price")}
+          {...form.getInputProps("tableNumber")}
         />
-        <Select
-          label={<div className="text-primary">Kategori Menu</div>}
-          placeholder="Semua"
-          data={[
-            { value: "coffee", label: "Coffee" },
-            { value: "non-coffee", label: "Non-Coffee" },
-            { value: "snack", label: "Snack" },
-          ]}
-          {...form.getInputProps("type")}
-        />
-        <Textarea
-          label={<div className="text-primary">Deskripsi</div>}
-          placeholder="Deskripsi"
-          resize="vertical"
-          rows={1}
-          {...form.getInputProps("description")}
-        />
-
-        <Dropzone
-          accept={IMAGE_MIME_TYPE}
-          onDrop={(files) => {
-            setFile(files[0]);
-          }}
-          hidden={file || menu}
-        >
-          <div
-            className={`border-desc/40 mx-auto rounded-md border border-dashed w-52 h-52 flex justify-center items-center cursor-pointer ${
-              form.errors.picture ? "text-red-500 border-red-500" : ""
-            }`}
-          >
-            <div className="font-semibold text-desc/70">Upload Foto</div>
-          </div>
-        </Dropzone>
-        {menu && !file ? previewDefault : previews()}
       </div>
 
       <div className="mt-6 flex items-center justify-end gap-2">

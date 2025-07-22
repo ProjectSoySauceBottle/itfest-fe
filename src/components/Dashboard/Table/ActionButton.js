@@ -75,7 +75,7 @@ export default function ActionButton({ item }) {
 
   const handleDelete = async (value) => {
     try {
-      //   const res = await axios.delete(`/api/menu/${value.id}`);
+      //   const res = await axios.delete(`/api/table/${value.id}`);
       const res = true;
       if (res) {
         notifications.show({
@@ -102,7 +102,7 @@ export default function ActionButton({ item }) {
       <Button color="red" onClick={() => handleModalDelete(item)}>
         <FaRegTrashCan size={18} />
       </Button>
-      <Link href={`/dashboard/menu/${item?.id}`}>
+      <Link href={`/dashboard/table/${item?.id}`}>
         <Button color="yellow">
           <FaEdit size={18} />
         </Button>
