@@ -63,7 +63,7 @@ export default function ActionButton({ item }) {
       <Button color="red" onClick={() => handleModalDelete(item)}>
         <FaRegTrashCan size={18} />
       </Button>
-      <Link href={`/dashboard/menu/edit/${item?.id ?? item?.id}`}>
+      <Link href={`/dashboard/menu/${item?.id}`}>
         <Button color="yellow">
           <FaEdit size={18} />
         </Button>

@@ -8,6 +8,7 @@ import {
   Text,
   Textarea,
   TextInput,
+  Tooltip,
 } from "@mantine/core";
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { useForm } from "@mantine/form";
@@ -20,14 +21,14 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { notifications } from "@mantine/notifications";
 
-export default function FormControl() {
+export default function FormControl({ menu = null }) {
   const form = useForm({
     initialValues: {
-      name: "",
-      type: "",
-      price: null,
-      image_url: null,
-      description: "",
+      name: menu?.name || "",
+      type: menu?.type || "",
+      price: menu?.price || null,
+      image_url: menu?.image_url || null,
+      description: menu?.description || "",
     },
     validate: {
       name: (value) =>
@@ -77,6 +78,36 @@ export default function FormControl() {
     setFile(null);
   };
 
+  const previewDefault = (
+    <div className="border border-desc text-center rounded-lg overflow-hidden">
+      <div className="relative w-full h-64">
+        <Image
+          src={menu?.image_url}
+          alt="image"
+          fill
+          sizes="full"
+          className="object-cover"
+        />
+      </div>
+      <Tooltip label={menu?.name}>
+        <div className="py-3 text-sm text-center border-t border-b">
+          {menu?.name}
+        </div>
+      </Tooltip>
+      <Dropzone
+        accept={IMAGE_MIME_TYPE}
+        onDrop={(pict) => {
+          setFile(pict[0]);
+        }}
+      >
+        <div className={`flex justify-center items-center cursor-pointer`}>
+          <Button variant="transparent" ta="center">
+            Ganti Gambar
+          </Button>
+        </div>
+      </Dropzone>
+    </div>
+  );
   const previews = () => {
     if (!file) {
       return;
@@ -108,6 +139,7 @@ export default function FormControl() {
       </div>
     );
   };
+  console.log(file, " file", form.values, "form", menu, "menu");
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)} className="mt-4">
@@ -129,7 +161,11 @@ export default function FormControl() {
         <Select
           label={<div className="text-primary">Kategori Menu</div>}
           placeholder="Semua"
-          data={["Coffee", "Non-Coffee", "Snack"]}
+          data={[
+            { value: "coffee", label: "Coffee" },
+            { value: "non-coffee", label: "Non-Coffee" },
+            { value: "snack", label: "Snack" },
+          ]}
           {...form.getInputProps("type")}
         />
         <Textarea
@@ -145,7 +181,7 @@ export default function FormControl() {
           onDrop={(files) => {
             setFile(files[0]);
           }}
-          hidden={file}
+          hidden={file || menu}
         >
           <div
             className={`border-desc/40 mx-auto rounded-md border border-dashed w-52 h-52 flex justify-center items-center cursor-pointer ${
@@ -155,7 +191,7 @@ export default function FormControl() {
             <div className="font-semibold text-desc/70">Upload Foto</div>
           </div>
         </Dropzone>
-        {previews()}
+        {menu && !file ? previewDefault : previews()}
       </div>
 
       <div className="mt-6 flex items-center justify-end gap-2">
