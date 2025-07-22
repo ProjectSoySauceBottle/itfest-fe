@@ -1,9 +1,13 @@
 "use client";
-import { Avatar, Checkbox } from "@mantine/core";
+import { Avatar, Button, Checkbox } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import Filter from "./Filter";
 import { useForm } from "@mantine/form";
 import PaginationComponent from "./Pagination";
+import ActionButton from "./ActionButton";
+import { FaRegTrashCan } from "react-icons/fa6";
+import { FiPlus } from "react-icons/fi";
+import Link from "next/link";
 
 export default function Tableview() {
   const [raw, setRaw] = useState([]);
@@ -13,6 +17,21 @@ export default function Tableview() {
     total_page: 1,
     items_per_page: 5,
   });
+  const [selectedIds, setSelectedIds] = useState([]);
+  const handleSelectAll = (event) => {
+    if (event.currentTarget.checked) {
+      const allIds = data.map((item) => item.id);
+      setSelectedIds(allIds);
+    } else {
+      setSelectedIds([]);
+    }
+  };
+
+  const handleSelectRow = (id) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
 
   const filter = useForm({
     initialValues: {
@@ -152,7 +171,6 @@ export default function Tableview() {
     setRaw(rawData);
     setData(rawData);
   }, []);
-  console.log(meta, "meta");
 
   useEffect(() => {
     const filteredData = raw.filter((item) => {
@@ -192,13 +210,25 @@ export default function Tableview() {
           scope="col"
           className="px-6 py-3 text-left text-xs font-medium text-desc uppercase tracking-wider"
         >
-          <Checkbox />
+          <Checkbox
+            checked={data.length > 0 && selectedIds.length === data.length}
+            indeterminate={
+              selectedIds.length > 0 && selectedIds.length < data.length
+            }
+            onChange={handleSelectAll}
+          />
         </th>
         <th
           scope="col"
           className="px-6 py-3 text-left text-xs font-medium text-desc uppercase tracking-wider"
         >
-          Nama
+          {selectedIds.length === data.length ? (
+            <Button color="red">
+              <FaRegTrashCan size={18} />
+            </Button>
+          ) : (
+            "Nama"
+          )}
         </th>
         <th
           scope="col"
@@ -233,7 +263,10 @@ export default function Tableview() {
         data.map((item) => (
           <tr key={item.id}>
             <td className="px-6 py-4">
-              <Checkbox />
+              <Checkbox
+                checked={selectedIds.includes(item.id)}
+                onChange={() => handleSelectRow(item.id)}
+              />
             </td>
             <td className="px-6 py-4 flex justify-start gap-2 items-center">
               <Avatar radius="xs" size="lg" src={item.image_url} />
@@ -244,7 +277,9 @@ export default function Tableview() {
             </td>
             <td className="px-6 py-4">{item.type}</td>
             <td className="px-6 py-4">{item.description}</td>
-            <td className="px-6 py-4">-</td>
+            <td>
+              <ActionButton item={item} />
+            </td>
           </tr>
         ))
       ) : (
@@ -259,7 +294,14 @@ export default function Tableview() {
 
   return (
     <div className="bg-white rounded-xl shadow p-4">
-      <h1 className="text-2xl font-bold text-primary">Menu</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-primary">Menu</h1>
+        <Link href="/dashboard/menu/create">
+          <Button>
+            <FiPlus size={18} /> Buat
+          </Button>
+        </Link>
+      </div>
       <Filter filter={filter} />
       <div className="mt-5 overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">

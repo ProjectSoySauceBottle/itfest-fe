@@ -8,7 +8,7 @@ export default function Error({ error, reset }) {
   }, [error]);
 
   return (
-    <div className="h-screen w-full flex flex-col justify-center items-center pt-16 bg-primary">
+    <div className="h-screen w-full flex flex-col justify-center items-center pt-16 bg-background text-primary">
       <h2>{error?.message}</h2>
       <Button onClick={() => reset()} color="yellow" href="/">
         Retry
