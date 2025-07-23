@@ -11,38 +11,38 @@ export default function ModalMenu({
 }) {
   const form = useForm({
     initialValues: {
-      id: "",
-      price: 0,
-      name: "",
-      image_url: "",
-      type: "",
-      total_price: 0,
-      quantity: 1,
+      menu_id: "",
+      harga: 0,
+      nama_menu: "",
+      gambar: "",
+      tipe: "",
+      total_harga: 0,
+      jumlah_pesanan: 1,
     },
   });
 
   useEffect(() => {
     if (item) {
       form.setValues({
-        id: item.id,
-        name: item.name,
-        image_url: item.image_url,
-        type: item.type,
-        price: Number(item.price),
-        quantity: 1,
-        total_price: item.price,
+        menu_id: item.menu_id,
+        nama_menu: item.nama_menu,
+        gambar: item.gambar,
+        tipe: item.tipe,
+        harga: Number(item.harga),
+        jumlah_pesanan: 1,
+        total_harga: Number(item.harga),
       });
     }
   }, [item]);
 
   const handleChangeQty = (value) => {
     if (value == null || value == "" || value == 0) {
-      form.setFieldValue("quantity", 1);
+      form.setFieldValue("jumlah_pesanan", 1);
     } else {
-      form.setFieldValue("quantity", value);
+      form.setFieldValue("jumlah_pesanan", value);
     }
 
-    form.setFieldValue("total_price", value * form.values.price);
+    form.setFieldValue("harga_total", value * form.values.harga);
   };
 
   const handleCloseModal = () => {
@@ -58,14 +58,15 @@ export default function ModalMenu({
 
     // cek ada ga item dengan id yang sama
     const existingIndex = existingOrders.findIndex(
-      (order) => order.id === newOrder.id
+      (order) => order.menu_id === newOrder.menu_id
     );
 
     if (existingIndex !== -1) {
-      // kalo ada update qty dan total_price
+      // kalo ada update qty dan total_harga
       const existingItem = existingOrders[existingIndex];
-      existingItem.quantity += newOrder.quantity;
-      existingItem.total_price = existingItem.quantity * existingItem.price;
+      existingItem.jumlah_pesanan += newOrder.jumlah_pesanan;
+      existingItem.total_harga =
+        existingItem.jumlah_pesanan * existingItem.harga;
 
       existingOrders[existingIndex] = existingItem;
     } else {
@@ -97,13 +98,13 @@ export default function ModalMenu({
       >
         <div className="flex flex-col items-center">
           <img
-            src={item?.image_url}
-            alt={item?.name}
+            src={item?.gambar}
+            alt={item?.nama_menu}
             className="w-80 h-52 mx-auto object-cover object-center rounded mb-2"
           />
-          <h3 className="font-semibold mt-4">{item?.name}</h3>
+          <h3 className="font-semibold mt-4">{item?.nama_menu}</h3>
           <p className="text-gray-600">
-            Rp{item?.price && Number(item?.price).toLocaleString("id-ID")}
+            Rp{item?.harga && Number(item?.harga).toLocaleString("id-ID")}
           </p>
 
           <form className="mt-4 space-y-2">
@@ -112,7 +113,7 @@ export default function ModalMenu({
               <NumberInput
                 placeholder="1"
                 min={1}
-                value={form.values.quantity}
+                value={form.values.jumlah_pesanan}
                 onChange={(value) => handleChangeQty(value)}
                 className="w-full max-w-40"
               />
@@ -123,10 +124,10 @@ export default function ModalMenu({
                 type="number"
                 placeholder="0"
                 value={
-                  item?.price
-                    ? Number(item?.price * form.values.quantity).toLocaleString(
-                        "id-ID"
-                      )
+                  item?.harga
+                    ? Number(
+                        item?.harga * form.values.jumlah_pesanan
+                      ).toLocaleString("id-ID")
                     : 0
                 }
                 readOnly
