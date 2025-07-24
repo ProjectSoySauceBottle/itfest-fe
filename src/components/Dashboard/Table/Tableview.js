@@ -50,24 +50,24 @@ export default function Tableview() {
     setData(rawData);
   }, [rawData]);
 
-  // useEffect(() => {
-  //   const filteredData = raw?.filter((item) => {
-  //     const matchNumber = item.nomor_meja.includes(filter.values.search);
+  useEffect(() => {
+    const filteredData = raw?.filter((item) => {
+      const matchNumber = item.nomor_meja.includes(filter.values.search);
 
-  //     return matchNumber;
-  //   });
+      return matchNumber;
+    });
 
-  //   const start = (filter.values.page - 1) * filter.values.limit;
-  //   const end = start + filter.values.limit;
+    const start = (filter.values.page - 1) * filter.values.limit;
+    const end = start + filter.values.limit;
 
-  //   setMeta({
-  //     current_page: filter.values.page,
-  //     total_page: Math.ceil(filteredData?.length / filter.values.limit) || 1,
-  //     items_per_page: filter.values.limit,
-  //   });
+    setMeta({
+      current_page: filter.values.page,
+      total_page: Math.ceil(filteredData?.length / filter.values.limit) || 1,
+      items_per_page: filter.values.limit,
+    });
 
-  //   setData(filteredData.slice(start, end));
-  // }, [filter.values.search, filter.values.page, filter.values.limit, raw]);
+    setData(filteredData?.slice(start, end));
+  }, [filter.values.search, filter.values.page, filter.values.limit, raw]);
 
   const thead = (
     <thead>
