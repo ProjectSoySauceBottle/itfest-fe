@@ -10,8 +10,8 @@ export default function Login() {
             WELCOME BACK
           </h1>
           <p className="text-sm z-10 leading-relaxed opacity-90 max-w-xs">
-            Welcome to our platform. Please sign in to continue and explore your
-            dashboard with personalized features.
+            Welcome back to your dashboard. Please sign in to continue and
+            explore your dashboard with personalized features.
           </p>
 
           <div aria-hidden="true">

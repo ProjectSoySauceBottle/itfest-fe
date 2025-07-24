@@ -5,23 +5,15 @@ import { useRouter } from "next/navigation";
 import { FaRegUser } from "react-icons/fa";
 import { TbLogout2 } from "react-icons/tb";
 import { RiHome3Line } from "react-icons/ri";
+import { deleteCookie, getCookie } from "cookies-next";
 
 const DashboardNavbar = ({ toggle, opened, darkMode }) => {
   const profile = "assets/images/dummy_profile.jpg";
-  const user = {
-    first_name: "Admin",
-    last_name: null,
-    address: null,
-    email: "admin@mail.com",
-    company: null,
-    subdomain: null,
-    role: {
-      id: 1,
-      name: "admin",
-      created_at: "2025-05-21T00:01:03.000000Z",
-      updated_at: "2025-05-21T00:01:03.000000Z",
-    },
-    path_picture: profile,
+  const user = getCookie("user") ? JSON.parse(getCookie("user")) : null;
+  const handleClearCookie = () => {
+    deleteCookie("token");
+    deleteCookie("user");
+    router.push("/admin/login");
   };
 
   const router = useRouter();
@@ -48,7 +40,7 @@ const DashboardNavbar = ({ toggle, opened, darkMode }) => {
           >
             <Menu.Target>
               <Image
-                src={user?.path_picture ? `/${user?.path_picture}` : profile}
+                src={profile}
                 className="!w-8 !h-8 object-contain !rounded-full"
               />
             </Menu.Target>
@@ -62,11 +54,9 @@ const DashboardNavbar = ({ toggle, opened, darkMode }) => {
                     className="!w-10 !h-10 object-contain !rounded-full"
                   />
                   <div>
-                    <Text size="sm">{`${user?.first_name ?? ""} ${
-                      user?.last_name ?? ""
-                    }`}</Text>
+                    <Text size="sm">{user?.name}</Text>
                     <Text size="sm" className="!opacity-70">
-                      {user?.role?.name ?? ""}
+                      admin
                     </Text>
                   </div>
                 </div>
@@ -78,18 +68,7 @@ const DashboardNavbar = ({ toggle, opened, darkMode }) => {
                   <div>Home</div>
                 </Flex>
               </Menu.Item>
-              <Menu.Item onClick={() => router.push("profile.edit")}>
-                <Flex align={"center"} gap={8}>
-                  <FaRegUser size={"1.2rem"} color="grey" />
-                  <div>Profile</div>
-                </Flex>
-              </Menu.Item>
-              <Menu.Item
-                onClick={() => {
-                  router.push("/logout");
-                  handleClearCookie();
-                }}
-              >
+              <Menu.Item onClick={() => handleClearCookie()}>
                 <Flex align={"center"} gap={8}>
                   <TbLogout2 size={"1.2rem"} color="grey" />
                   <div>Logout</div>
