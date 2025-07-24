@@ -26,9 +26,9 @@ export const apiPost = async (endpoint, body = {}, config = {}) => {
   }
 };
 
-export const apiPut = async (endpoint, body = {}, config = {}) => {
+export const apiPatch = async (endpoint, body = {}, config = {}) => {
   try {
-    const res = await instance.put(endpoint, body, config);
+    const res = await instance.patch(endpoint, body, config);
     return { data: res.data, error: null };
   } catch (error) {
     return { data: null, error };
