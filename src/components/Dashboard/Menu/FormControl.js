@@ -24,6 +24,7 @@ import { apiPut, apiPost } from "@/libs/api";
 
 export default function FormControl({ menu = null }) {
   const [loading, setLoading] = useState(false);
+  const [loadingImage, setLoadingImage] = useState(false);
   const form = useForm({
     initialValues: {
       nama_menu: menu?.nama_menu || "",
@@ -50,24 +51,34 @@ export default function FormControl({ menu = null }) {
     router.push("/dashboard/menu");
   };
 
-  const handleSubmit = async () => {
-    setLoading(true);
+  const uploadImage = async (file) => {
+    setLoadingImage(true);
     const formData = new FormData();
-    formData.append("nama_menu", form.values.nama_menu);
-    formData.append("tipe", form.values.tipe);
-    formData.append("harga", form.values.harga);
-    formData.append("deskripsi", form.values.deskripsi);
+    formData.append("image", file);
 
-    if (file) {
-      formData.append("gambar", file);
-    }
-
-    if (menu) {
-      const { data, error } = await apiPut(`/menus/${menu.menu_id}`, formData, {
+    try {
+      const { data, error } = await apiPost("/upload-image", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
+      setLoadingImage(false);
+      return { url: data?.url, path: data?.path };
+    } catch (error) {
+      console.log(error, "upload gambar");
+      setLoadingImage(false);
+      return null;
+    }
+  };
+
+  const handleSubmit = async () => {
+    setLoading(true);
+
+    if (menu) {
+      const { data, error } = await apiPut(
+        `/menus/${menu.menu_id}`,
+        form.values
+      );
 
       if (!error) {
         notifications.show({
@@ -92,11 +103,7 @@ export default function FormControl({ menu = null }) {
         setLoading(false);
       }
     } else {
-      const { data, error } = await apiPost("/menus", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const { data, error } = await apiPost("/menus", form.values);
 
       if (!error) {
         notifications.show({
@@ -121,6 +128,7 @@ export default function FormControl({ menu = null }) {
         setLoading(false);
       }
     }
+    setLoading(false);
   };
 
   const removeFile = () => {
@@ -145,9 +153,17 @@ export default function FormControl({ menu = null }) {
       </Tooltip>
       <Dropzone
         accept={IMAGE_MIME_TYPE}
-        onDrop={(pict) => {
-          setFile(pict[0]);
-          form.setFieldValue("gambar", pict[0]);
+        // onDrop={(pict) => {
+        //   setFile(pict[0]);
+        //   form.setFieldValue("gambar", pict[0]);
+        // }}
+        onDrop={async (files) => {
+          const file = files[0];
+          setFile(file);
+          const uploaded = await uploadImage(file);
+          if (uploaded?.url) {
+            form.setFieldValue("gambar", uploaded.url);
+          }
         }}
       >
         <div className={`flex justify-center items-center cursor-pointer`}>
@@ -227,9 +243,13 @@ export default function FormControl({ menu = null }) {
 
         <Dropzone
           accept={IMAGE_MIME_TYPE}
-          onDrop={(files) => {
-            setFile(files[0]);
-            form.setFieldValue("gambar", files[0]);
+          onDrop={async (files) => {
+            const file = files[0];
+            setFile(file);
+            const uploaded = await uploadImage(file);
+            if (uploaded?.url) {
+              form.setFieldValue("gambar", uploaded.url);
+            }
           }}
           hidden={file || menu}
         >
@@ -245,7 +265,12 @@ export default function FormControl({ menu = null }) {
       </div>
 
       <div className="mt-6 flex items-center justify-end gap-2">
-        <Button type="submit" color="blue" loading={loading} disabled={loading}>
+        <Button
+          type="submit"
+          color="blue"
+          loading={loading}
+          disabled={loading || loadingImage}
+        >
           Simpan
         </Button>
         <Button variant="light" color="grey" onClick={handleCancel}>
