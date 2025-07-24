@@ -1,7 +1,7 @@
 import { Button } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { notifications } from "@mantine/notifications";
-import React from "react";
+import React, { useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { RiCloseLargeFill } from "react-icons/ri";
@@ -9,7 +9,7 @@ import { IoCheckmarkOutline } from "react-icons/io5";
 import Link from "next/link";
 import { apiDelete } from "@/libs/api";
 
-export const handleModalDeleteAll = (values, refetch) => {
+export const handleModalDeleteAll = (values, refetch, setLoadingDelete) => {
   modals.openConfirmModal({
     children: (
       <div className="font-poppins text-center font-semibold mb-8">
@@ -29,11 +29,12 @@ export const handleModalDeleteAll = (values, refetch) => {
     },
     groupProps: { className: "!flex-row-reverse !justify-center !gap-10" },
     labels: { confirm: "Ya, Hapus", cancel: "Batal" },
-    onConfirm: () => handleDeleteAll(values, refetch),
+    onConfirm: () => handleDeleteAll(values, refetch, setLoadingDelete),
   });
 };
 
-const handleDeleteAll = async (values, refetch) => {
+const handleDeleteAll = async (values, refetch, setLoadingDelete) => {
+  setLoadingDelete(true);
   try {
     await Promise.all(values.map((item) => apiDelete(`/menus/${item}`)));
     notifications.show({
@@ -43,6 +44,7 @@ const handleDeleteAll = async (values, refetch) => {
       color: "green",
       autoClose: true,
     });
+    setLoadingDelete(false);
     await refetch();
   } catch (error) {
     console.log(error, "delete all");
@@ -53,10 +55,12 @@ const handleDeleteAll = async (values, refetch) => {
       color: "red",
       autoClose: true,
     });
+    setLoadingDelete(false);
   }
 };
 
 export default function ActionButton({ item, refetch }) {
+  const [loading, setLoading] = useState(false);
   const handleModalDelete = (value) =>
     modals.openConfirmModal({
       children: (
@@ -84,6 +88,7 @@ export default function ActionButton({ item, refetch }) {
     });
 
   const handleDelete = async (value) => {
+    setLoading(true);
     try {
       const { data, error } = await apiDelete(`/menus/${value.menu_id}`);
       if (data) {
@@ -104,11 +109,18 @@ export default function ActionButton({ item, refetch }) {
         color: "red",
         autoClose: true,
       });
+    } finally {
+      setLoading(false);
     }
   };
   return (
     <div className="flex gap-3">
-      <Button color="red" onClick={() => handleModalDelete(item)}>
+      <Button
+        color="red"
+        onClick={() => handleModalDelete(item)}
+        loading={loading}
+        disabled={loading}
+      >
         <FaRegTrashCan size={18} />
       </Button>
       <Link href={`/dashboard/menu/${item?.menu_id}`}>

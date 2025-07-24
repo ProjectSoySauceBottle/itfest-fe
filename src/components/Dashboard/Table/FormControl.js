@@ -61,6 +61,7 @@ export default function FormControl({ table = null }) {
           color: "green",
           autoClose: true,
         });
+        setLoading(false);
         form.reset();
         router.push("/dashboard/table");
       } else {
@@ -71,8 +72,8 @@ export default function FormControl({ table = null }) {
           color: "red",
           autoClose: true,
         });
+        setLoading(false);
       }
-      setLoading(false);
     } else {
       const { data, error } = await apiPost("/mejas", form.values, {
         headers: {
@@ -88,6 +89,7 @@ export default function FormControl({ table = null }) {
           color: "green",
           autoClose: true,
         });
+        setLoading(false);
         form.reset();
         router.push("/dashboard/table");
       } else {
@@ -98,8 +100,8 @@ export default function FormControl({ table = null }) {
           color: "red",
           autoClose: true,
         });
+        setLoading(false);
       }
-      setLoading(false);
     }
   };
 

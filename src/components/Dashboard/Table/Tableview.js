@@ -13,6 +13,7 @@ import { useClientFetch } from "@/hook/useClientFetch";
 
 export default function Tableview() {
   const { data: rawData, loading, error, refetch } = useClientFetch("/mejas");
+  const [loadingDelete, setLoadingDelete] = useState(false);
 
   const [raw, setRaw] = useState([]);
   const [data, setData] = useState([]);
@@ -87,10 +88,14 @@ export default function Tableview() {
           scope="col"
           className="px-6 py-3 text-left text-xs font-medium text-desc uppercase tracking-wider"
         >
-          {selectedIds.length === data?.length ? (
+          {selectedIds.length > 0 ? (
             <Button
               color="red"
-              onClick={() => handleModalDeleteAll(selectedIds, refetch)}
+              onClick={() =>
+                handleModalDeleteAll(selectedIds, refetch, setLoadingDelete)
+              }
+              loading={loadingDelete}
+              disabled={loadingDelete}
             >
               <FaRegTrashCan size={18} />
             </Button>

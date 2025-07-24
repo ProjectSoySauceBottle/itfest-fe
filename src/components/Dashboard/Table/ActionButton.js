@@ -9,7 +9,7 @@ import { IoCheckmarkOutline } from "react-icons/io5";
 import Link from "next/link";
 import { apiDelete } from "@/libs/api";
 
-export const handleModalDeleteAll = (values, refetch) => {
+export const handleModalDeleteAll = (values, refetch, setLoadingDelete) => {
   modals.openConfirmModal({
     children: (
       <div className="font-poppins text-center font-semibold mb-8">
@@ -29,11 +29,12 @@ export const handleModalDeleteAll = (values, refetch) => {
     },
     groupProps: { className: "!flex-row-reverse !justify-center !gap-10" },
     labels: { confirm: "Ya, Hapus", cancel: "Batal" },
-    onConfirm: () => handleDeleteAll(values, refetch),
+    onConfirm: () => handleDeleteAll(values, refetch, setLoadingDelete),
   });
 };
 
-const handleDeleteAll = async (values, refetch) => {
+const handleDeleteAll = async (values, refetch, setLoadingDelete) => {
+  setLoadingDelete(true);
   try {
     await Promise.all(values.map((item) => apiDelete(`/mejas/${item}`)));
     notifications.show({
@@ -43,6 +44,7 @@ const handleDeleteAll = async (values, refetch) => {
       color: "green",
       autoClose: true,
     });
+    setLoadingDelete(false);
     await refetch();
   } catch (error) {
     console.log(error, "delete all");
@@ -53,6 +55,7 @@ const handleDeleteAll = async (values, refetch) => {
       color: "red",
       autoClose: true,
     });
+    setLoadingDelete(false);
   }
 };
 

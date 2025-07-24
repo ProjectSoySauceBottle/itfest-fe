@@ -23,6 +23,7 @@ import { notifications } from "@mantine/notifications";
 import { apiPut, apiPost } from "@/libs/api";
 
 export default function FormControl({ menu = null }) {
+  const [loading, setLoading] = useState(false);
   const form = useForm({
     initialValues: {
       nama_menu: menu?.nama_menu || "",
@@ -50,6 +51,7 @@ export default function FormControl({ menu = null }) {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     const formData = new FormData();
     formData.append("nama_menu", form.values.nama_menu);
     formData.append("tipe", form.values.tipe);
@@ -75,6 +77,7 @@ export default function FormControl({ menu = null }) {
           color: "green",
           autoClose: true,
         });
+        setLoading(false);
         form.reset();
         setFile(null);
         router.push("/dashboard/menu");
@@ -86,6 +89,7 @@ export default function FormControl({ menu = null }) {
           color: "red",
           autoClose: true,
         });
+        setLoading(false);
       }
     } else {
       const { data, error } = await apiPost("/menus", formData, {
@@ -102,6 +106,7 @@ export default function FormControl({ menu = null }) {
           color: "green",
           autoClose: true,
         });
+        setLoading(false);
         form.reset();
         setFile(null);
         router.push("/dashboard/menu");
@@ -113,6 +118,7 @@ export default function FormControl({ menu = null }) {
           color: "red",
           autoClose: true,
         });
+        setLoading(false);
       }
     }
   };
@@ -239,7 +245,7 @@ export default function FormControl({ menu = null }) {
       </div>
 
       <div className="mt-6 flex items-center justify-end gap-2">
-        <Button type="submit" color="blue">
+        <Button type="submit" color="blue" loading={loading} disabled={loading}>
           Simpan
         </Button>
         <Button variant="light" color="grey" onClick={handleCancel}>
