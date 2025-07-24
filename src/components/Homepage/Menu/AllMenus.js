@@ -18,14 +18,14 @@ export default function AllMenus({ data, searchType = null }) {
   const dataType = [
     ...new Set(
       data
-        .filter((item) => {
+        ?.filter((item) => {
           if (searchType) {
-            return item.type === searchType;
+            return item.tipe === searchType;
           } else {
             return item;
           }
         })
-        .map((item) => item.type)
+        .map((item) => item.tipe)
     ),
   ];
 
@@ -58,26 +58,32 @@ export default function AllMenus({ data, searchType = null }) {
   const Card = ({ type }) => {
     return (
       <div key={type} className="mt-20 w-full cursor-pointer">
-        <h2 className="text-xl font-bold mb-4 capitalize">{type}</h2>
-        {data.filter((item) => item.type === type)?.length > 0 ? (
+        <h2 className="text-xl font-bold mb-4 capitalize">
+          {type == "non_coffee" ? "Non Coffee" : type}
+        </h2>
+        {data?.filter((item) => item.tipe === type)?.length > 0 ? (
           <div className="hidden sm:grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {data
-              .filter((item) => item.type === type)
+              .filter((item) => item.tipe === type)
               .map((item, index) => (
-                <FadeIn key={item.name} direction="right" delay={index * 100}>
+                <FadeIn
+                  key={item.menu_id}
+                  direction="right"
+                  delay={index * 100}
+                >
                   <div
                     key={index}
                     onClick={() => handleModalOpen(item)}
                     className="bg-white rounded shadow p-4"
                   >
                     <img
-                      src={item.image_url}
-                      alt={item.name}
+                      src={item.gambar}
+                      alt={item.nama_menu}
                       className="w-full h-52 object-cover object-center rounded mb-2"
                     />
-                    <h3 className="font-semibold">{item.name}</h3>
+                    <h3 className="font-semibold">{item.nama_menu}</h3>
                     <p className="text-gray-600">
-                      Rp{Number(item.price).toLocaleString("id-ID")}
+                      Rp{Number(item.harga).toLocaleString("id-ID")}
                     </p>
                   </div>
                 </FadeIn>
@@ -88,22 +94,22 @@ export default function AllMenus({ data, searchType = null }) {
         )}
         <Carousel className="sm:hidden">
           {data
-            .filter((item) => item.type === type)
+            .filter((item) => item.tipe === type)
             .map((item) => (
-              <Carousel.Slide key={item.id}>
+              <Carousel.Slide key={item.menu_id}>
                 <FadeIn direction="right">
                   <div
                     onClick={() => handleModalOpen(item)}
                     className="bg-white rounded shadow p-4"
                   >
                     <img
-                      src={item.image_url}
-                      alt={item.name}
+                      src={item.gambar}
+                      alt={item.nama_menu}
                       className="w-full h-52 object-cover object-center rounded mb-2"
                     />
-                    <h3 className="font-semibold">{item.name}</h3>
+                    <h3 className="font-semibold">{item.nam_menu}</h3>
                     <p className="text-gray-600">
-                      Rp{Number(item.price).toLocaleString("id-ID")}
+                      Rp{Number(item.harga).toLocaleString("id-ID")}
                     </p>
                   </div>
                 </FadeIn>

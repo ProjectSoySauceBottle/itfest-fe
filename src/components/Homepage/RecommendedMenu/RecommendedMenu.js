@@ -2,46 +2,19 @@
 
 import FadeIn from "@/components/Animation/FadeInAnimation";
 import { Carousel } from "@mantine/carousel";
-import { Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import React, { useEffect, useState } from "react";
-import { FaAngleDoubleLeft, FaArrowLeft } from "react-icons/fa";
 import ModalMenu from "../Menu/Modal";
 import NotedMenu from "../Menu/NotedMenu";
 import { GiNotebook } from "react-icons/gi";
+import { useClientFetch } from "@/hook/useClientFetch";
 
 export default function RecommendedMenu() {
-  const data = [
-    {
-      id: 3,
-      name: "Latte",
-      price: 25000,
-      type: "coffee",
-      image_url: "/assets/images/menu/Latte.jpg",
-    },
-
-    // Non-Coffee
-    {
-      id: 7,
-      name: "Chocolate Milk",
-      price: 22000,
-      type: "non-coffee",
-      image_url: "/assets/images/menu/Chocolate Milk.jpg",
-    },
-    {
-      id: 8,
-      name: "Strawberry Smoothie",
-      price: 28000,
-      type: "non-coffee",
-      image_url: "/assets/images/menu/Strawberry Smoothie.jpg",
-    },
-  ];
+  const { data, loading, error } = useClientFetch("/menus");
 
   const [notedOrdersTotal, setNotedOrdersTotal] = useState(null);
-
   const [opened, { open, close }] = useDisclosure(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const dataType = [...new Set(data.map((item) => item.type))];
 
   // drawer open
   const [drawerOpened, setDrawerOpened] = useState(false);
@@ -72,47 +45,47 @@ export default function RecommendedMenu() {
   const Card = () => {
     return (
       <div className="mt-10 mb-20 w-full cursor-pointer">
-        {data.length > 0 ? (
+        {data?.length > 0 ? (
           <div className="hidden sm:grid grid-cols-2 md:grid-cols-3 gap-4 items-center justify-center">
-            {data.map((item, index) => (
-              <FadeIn key={item.name} direction="right" delay={index * 100}>
+            {data?.slice(0, 3).map((item, index) => (
+              <FadeIn key={item.menu_id} direction="right" delay={index * 100}>
                 <div
                   key={index}
                   onClick={() => handleModalOpen(item)}
                   className="bg-white rounded shadow p-4"
                 >
                   <img
-                    src={item.image_url}
-                    alt={item.name}
+                    src={item.gambar}
+                    alt={item.nama_menu}
                     className="w-full h-52 object-cover object-center rounded mb-2"
                   />
-                  <h3 className="font-semibold">{item.name}</h3>
+                  <h3 className="font-semibold">{item.nama_menu}</h3>
                   <p className="text-gray-600">
-                    Rp{Number(item.price).toLocaleString("id-ID")}
+                    Rp{Number(item.harga).toLocaleString("id-ID")}
                   </p>
                 </div>
               </FadeIn>
             ))}
           </div>
         ) : (
-          <div>Menu Belum Tersedia</div>
+          ""
         )}
         <Carousel className="sm:hidden">
-          {data.map((item) => (
-            <Carousel.Slide key={item.id}>
+          {data?.slice(0, 3).map((item) => (
+            <Carousel.Slide key={item.menu_id}>
               <FadeIn direction="right">
                 <div
                   onClick={() => handleModalOpen(item)}
                   className="bg-white rounded shadow p-4"
                 >
                   <img
-                    src={item.image_url}
-                    alt={item.name}
+                    src={item.gambar}
+                    alt={item.nama_menu}
                     className="w-full h-52 object-cover object-center rounded mb-2"
                   />
-                  <h3 className="font-semibold">{item.name}</h3>
+                  <h3 className="font-semibold">{item.nama_menu}</h3>
                   <p className="text-gray-600">
-                    Rp{Number(item.price).toLocaleString("id-ID")}
+                    Rp{Number(item.harga).toLocaleString("id-ID")}
                   </p>
                 </div>
               </FadeIn>

@@ -47,7 +47,7 @@ export default function Menu() {
               Non-Coffee
             </h3>
             <a
-              href="/menu?s=non-coffee"
+              href="/menu?s=non_coffee"
               className="cursor-pointer text-sm active:underline translate-y-10 group-hover:translate-y-0 transition duration-300 mb-2 hover:underline"
             >
               Lihat Semua
