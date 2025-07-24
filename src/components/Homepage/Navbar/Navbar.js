@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CiSearch, CiShoppingCart } from "react-icons/ci";
 import { MdClose, MdMenu } from "react-icons/md";
@@ -9,7 +9,14 @@ import { useRouter } from "next/navigation";
 import { TbRosetteFilled } from "react-icons/tb";
 
 export default function Navbar() {
-  const dummyTableNumber = 13;
+  const [tableNumber, setTableNumber] = useState("");
+
+  useEffect(() => {
+    const meja = localStorage.getItem("meja");
+    if (meja) {
+      setTableNumber(meja);
+    }
+  }, []);
 
   const [opened, { open, close }] = useDisclosure(false);
   const router = useRouter();
@@ -58,7 +65,7 @@ export default function Navbar() {
                 label={
                   <div>
                     Nomor Meja Anda{" "}
-                    <span className="font-bold">{dummyTableNumber}</span>
+                    <span className="font-bold">{tableNumber}</span>
                   </div>
                 }
                 events={{ hover: true, focus: true, touch: true }}
@@ -66,7 +73,7 @@ export default function Navbar() {
                 <div className="relative">
                   <TbRosetteFilled size="32" />
                   <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-xs text-white z-10">
-                    {dummyTableNumber}
+                    {tableNumber}
                   </div>
                 </div>
               </Tooltip>

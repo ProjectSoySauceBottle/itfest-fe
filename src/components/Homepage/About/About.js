@@ -26,18 +26,19 @@ export default function About() {
           <FadeIn direction="right" delay={400}>
             <div className="space-y-3 text-desc">
               <p className="text-justify">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic
-                odio porro Lorem ipsum dolor sit amet consectetur adipisicing
-                elit. Maiores id dolor, quisquam facilis natus ex dolores
-                nesciunt est laboriosam laborum maxime minima unde quod
-                temporibus aliquam blanditiis vero eius, architecto veniam sed?
-                fugit minus earum alias consequuntur veritatis assumenda at
-                sapiente.
+                Kami hadir untuk menghadirkan pengalaman ngopi yang berbeda.
+                Dari pemilihan biji kopi terbaik hingga cara penyajian yang
+                penuh perhatian, setiap detail kami pikirkan untuk memberikan
+                rasa yang tak terlupakan. Café ini bukan hanya tempat menikmati
+                minuman, tapi juga ruang untuk berbagi cerita dan menciptakan
+                kenangan.
               </p>
               <p className="text-justify">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto
-                nisi laborum magni ipsam accusamus repellendus porro vero
-                molestias recusandae et!
+                Dengan interior yang hangat dan suasana yang tenang, kamu bisa
+                bekerja, bersantai, atau sekadar menikmati waktu luang. Tim kami
+                ramah dan siap melayani dengan sepenuh hati. Setiap kunjunganmu
+                adalah bagian dari perjalanan kami untuk terus menjadi lebih
+                baik.
               </p>
             </div>
           </FadeIn>

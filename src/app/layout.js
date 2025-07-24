@@ -8,7 +8,8 @@ import "@mantine/dropzone/styles.css";
 import { MantineProvider } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
+import TableInitializer from "@/components/Initialization/TableInitializer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -66,9 +67,11 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const cookieStore = await cookies();
-  const tableNumber = cookieStore.get("table_number")?.value;
-  console.log(tableNumber, "nomor meja");
+  const headersList = await headers();
+  const url = headersList.get("x-url") || ""; // fallback kalau tidak pakai middleware
+  const searchParams = new URL(url, "http://localhost"); // base URL boleh apa saja
+  const meja = searchParams.searchParams.get("meja");
+  console.log("meja", meja);
 
   return (
     <html lang="en">
@@ -78,6 +81,7 @@ export default async function RootLayout({ children }) {
         <MantineProvider>
           <ModalsProvider>
             <Notifications position="top-right" />
+            <TableInitializer />
             <main>{children}</main>
           </ModalsProvider>
         </MantineProvider>

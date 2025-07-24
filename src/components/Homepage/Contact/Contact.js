@@ -58,8 +58,8 @@ export default function Contact() {
       </FadeIn>
       <FadeIn direction="up" delay={200}>
         <p className="max-w-[30rem] text-center text-sm text-desc mx-auto mt-4 leading-6">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas unde
-          optio fugiat alias deleniti sapiente!
+          Ingin pesan tempat atau punya pertanyaan? Hubungi kami kapan saja, dan
+          kami siap membantumu dengan senang hati.
         </p>
       </FadeIn>
 

@@ -11,9 +11,9 @@ export default function Menu() {
       </FadeIn>
       <FadeIn direction="up" delay={200}>
         <p className="max-w-[30rem] text-desc text-center text-sm mx-auto mt-4 leading-6">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga
-          incidunt, impedit obcaecati placeat officiis. Lorem, ipsum. Lorem
-          ipsum
+          Cicipi berbagai pilihan kopi, teh, dan camilan khas kami yang dibuat
+          dengan bahan berkualitas. Temukan rasa favoritmu dan nikmati momen
+          terbaikmu bersama kami.
         </p>
       </FadeIn>
 

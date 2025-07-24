@@ -17,8 +17,7 @@ export default function Hero() {
         </FadeIn>
         <FadeIn direction="right" delay={200}>
           <p className="will-fade-transform text-muted md:text-desc text-xs md:text-base mix-blend-difference">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur,
-            odio?
+            Sajikan harimu dengan kopi terbaik, dari pagi hingga malam hari.
           </p>
         </FadeIn>
         <FadeIn direction="right" delay={400}>
