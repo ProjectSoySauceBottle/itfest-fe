@@ -45,12 +45,7 @@ export default function FormControl({ table = null }) {
     if (table) {
       const { data, error } = await apiPut(
         `/mejas/${table.meja_id}`,
-        form.values,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        form.values
       );
 
       if (!error) {
