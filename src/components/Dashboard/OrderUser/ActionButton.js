@@ -1,14 +1,15 @@
 import { Button } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { notifications } from "@mantine/notifications";
-import React from "react";
+import React, { useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { RiCloseLargeFill } from "react-icons/ri";
 import { IoCheckmarkOutline } from "react-icons/io5";
 import Link from "next/link";
+import { apiDelete } from "@/libs/api";
 
-export const handleModalDeleteAll = (values) => {
+export const handleModalDeleteAll = (values, refetch, setLoadingDelete) => {
   modals.openConfirmModal({
     children: (
       <div className="font-poppins text-center font-semibold mb-8">
@@ -28,26 +29,38 @@ export const handleModalDeleteAll = (values) => {
     },
     groupProps: { className: "!flex-row-reverse !justify-center !gap-10" },
     labels: { confirm: "Ya, Hapus", cancel: "Batal" },
-    onConfirm: () => handleDeleteAll(values),
+    onConfirm: () => handleDeleteAll(values, refetch, setLoadingDelete),
   });
 };
 
-const handleDeleteAll = (values) => {
-  //   const res = await axios.delete(`/api/table/${value.id}`);
-  const res = true;
-  if (res) {
+const handleDeleteAll = async (values, refetch, setLoadingDelete) => {
+  setLoadingDelete(true);
+  try {
+    await Promise.all(values.map((item) => apiDelete(`/mejas/${item}`)));
     notifications.show({
       title: "Success",
-      message: `Berhasil menghapus semua barang`,
+      message: `Berhasil menghapus semua data terpilih`,
       icon: <IoCheckmarkOutline size={18} />,
       color: "green",
       autoClose: true,
     });
-    // fetchData();
+    setLoadingDelete(false);
+    await refetch();
+  } catch (error) {
+    console.log(error, "delete all");
+    notifications.show({
+      title: "Failed",
+      message: `Gagal menghapus semua data terpilih`,
+      icon: <RiCloseLargeFill size={18} />,
+      color: "red",
+      autoClose: true,
+    });
+    setLoadingDelete(false);
   }
 };
 
-export default function ActionButton({ item }) {
+export default function ActionButton({ item, refetch }) {
+  const [loading, setLoading] = useState(false);
   const handleModalDelete = (value) =>
     modals.openConfirmModal({
       children: (
@@ -72,10 +85,10 @@ export default function ActionButton({ item }) {
     });
 
   const handleDelete = async (value) => {
+    setLoading(true);
     try {
-      //   const res = await axios.delete(`/api/order-user/${value.id}`);
-      const res = true;
-      if (res) {
+      const { data, error } = await apiDelete(`/pesanans/${value.pesanan_id}`);
+      if (!error) {
         notifications.show({
           title: "Success",
           message: `Berhasil menghapus data pesanan`,
@@ -83,7 +96,8 @@ export default function ActionButton({ item }) {
           color: "green",
           autoClose: true,
         });
-        // fetchData();
+        setLoading(false);
+        refetch();
       }
     } catch (error) {
       notifications.show({
@@ -93,11 +107,17 @@ export default function ActionButton({ item }) {
         color: "red",
         autoClose: true,
       });
+      setLoading(false);
     }
   };
   return (
     <div className="flex gap-3">
-      <Button color="red" onClick={() => handleModalDelete(item)}>
+      <Button
+        color="red"
+        onClick={() => handleModalDelete(item)}
+        loading={loading}
+        disabled={loading}
+      >
         <FaRegTrashCan size={18} />
       </Button>
     </div>

@@ -24,7 +24,7 @@ export default function Filter({ filter }) {
         placeholder="status"
         data={[
           { value: "pending", label: "Sedang dibuat" },
-          { value: "delivered", label: "Selesai" },
+          { value: "paid", label: "Selesai" },
         ]}
         className="w-full"
         {...filter.getInputProps("status")}
