@@ -29,7 +29,7 @@ export default function RecommendedMenu() {
       const stored = localStorage.getItem("notedOrders");
       const notedOrders = stored ? JSON.parse(stored) : [];
       const totalOrder = notedOrders.reduce(
-        (acc, item) => acc + item.quantity,
+        (acc, item) => acc + item.jumlah_pesanan,
         0
       );
       setNotedOrdersTotal(totalOrder || null);
@@ -41,6 +41,7 @@ export default function RecommendedMenu() {
       window.removeEventListener("totalOrder", updateNotedOrders);
     };
   }, []);
+  console.log("notedOrdersTotal", notedOrdersTotal);
 
   const Card = () => {
     return (

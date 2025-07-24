@@ -144,8 +144,8 @@ export default function ModalMenu({
             </div>
           </form>
 
-          <div className="mt-4 flex  w-full gap-2">
-            <Tooltip
+          <div className="mt-4 flex w-full gap-2">
+            {/* <Tooltip
               label="Pesan Sekarang"
               position="bottom"
               defaultOpened="true"
@@ -157,7 +157,7 @@ export default function ModalMenu({
               >
                 Pesan
               </button>
-            </Tooltip>
+            </Tooltip> */}
             <Tooltip
               label="Catat Pesanan Dahulu"
               color="var(--primary)"
@@ -167,7 +167,7 @@ export default function ModalMenu({
             >
               <button
                 onClick={handleSaveToLocal}
-                className="w-2/4 cursor-pointer p-2 bg-white border border-primary rounded-md"
+                className="w-full cursor-pointer p-2 bg-white border border-primary rounded-md"
               >
                 <GiNotebook size="20" className="mx-auto" />
               </button>
