@@ -42,7 +42,7 @@ export default function AllMenus({ data, searchType = null }) {
       const stored = localStorage.getItem("notedOrders");
       const notedOrders = stored ? JSON.parse(stored) : [];
       const totalOrder = notedOrders.reduce(
-        (acc, item) => acc + item.quantity,
+        (acc, item) => acc + item.jumlah_pesanan,
         0
       );
       setNotedOrdersTotal(totalOrder || null);

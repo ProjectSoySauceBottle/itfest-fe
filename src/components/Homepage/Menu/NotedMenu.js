@@ -13,7 +13,7 @@ export default function NotedMenu({ drawerOpened, setDrawerOpened }) {
     setNotedOrders(stored ? JSON.parse(stored) : []);
   }, [drawerOpened]);
   const totalHarga = notedOrders.reduce(
-    (acc, item) => acc + item.total_price,
+    (acc, item) => acc + item.total_harga,
     0
   );
 
@@ -43,13 +43,13 @@ export default function NotedMenu({ drawerOpened, setDrawerOpened }) {
         {notedOrders.length > 0 ? (
           notedOrders?.map((item, index) => (
             <div
-              key={item.id}
+              key={item.menu_id}
               className="flex items-start gap-4 border border-primary p-2 rounded-lg shadow-sm"
             >
               <div className="relative w-full h-36 max-w-48">
                 <Image
-                  src={item.image_url}
-                  alt={item.name}
+                  src={item.gambar}
+                  alt={item.nama_menu}
                   fill
                   sizes="full"
                   className="object-cover object-center rounded-md"
@@ -57,16 +57,16 @@ export default function NotedMenu({ drawerOpened, setDrawerOpened }) {
               </div>
               <div className="flex-1">
                 <div className="font-semibold text-primary text-sm">
-                  {item.name}
+                  {item.nama_menu}
                 </div>
                 <div className="text-desc text-xs">
-                  Harga: Rp{item.price.toLocaleString("id-ID")}
+                  Harga: Rp{item.harga.toLocaleString("id-ID")}
                 </div>
                 <div className="text-desc text-xs">
-                  Jumlah: x{item.quantity}
+                  Jumlah: x{item.jumlah_pesanan}
                 </div>
                 <div className="font-semibold text-sm">
-                  Total: Rp{item.total_price.toLocaleString("id-ID")}
+                  Total: Rp{item.total_harga.toLocaleString("id-ID")}
                 </div>
               </div>
               <button
@@ -99,6 +99,7 @@ export default function NotedMenu({ drawerOpened, setDrawerOpened }) {
           radius="md"
           size="md"
           mt="sm"
+          disabled={notedOrders.length === 0}
         >
           Pesan Sekarang
         </Button>
