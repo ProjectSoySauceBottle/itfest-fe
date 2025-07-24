@@ -8,8 +8,11 @@ import ActionButton, { handleModalDeleteAll } from "./ActionButton";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { FiPlus } from "react-icons/fi";
 import Link from "next/link";
+import { useClientFetch } from "@/hook/useClientFetch";
 
 export default function Tableview() {
+  const { data: rawData, loading, error, refetch } = useClientFetch("/menus");
+
   const [raw, setRaw] = useState([]);
   const [data, setData] = useState([]);
   const [meta, setMeta] = useState({
@@ -20,7 +23,7 @@ export default function Tableview() {
   const [selectedIds, setSelectedIds] = useState([]);
   const handleSelectAll = (event) => {
     if (event.currentTarget.checked) {
-      const allIds = data?.map((item) => item.id);
+      const allIds = data?.map((item) => item.menu_id);
       setSelectedIds(allIds);
     } else {
       setSelectedIds([]);
@@ -41,145 +44,20 @@ export default function Tableview() {
       limit: 5,
     },
   });
+
   useEffect(() => {
-    const rawData = [
-      {
-        id: 1,
-        name: "Espresso",
-        price: 20000,
-        type: "coffee",
-        image_url: "/assets/images/menu/Espresso.jpg",
-        description: "desc",
-      },
-      {
-        id: 2,
-        name: "Americano",
-        price: 25000,
-        type: "coffee",
-        image_url: "/assets/images/menu/Americano.jpg",
-        description: "desc",
-      },
-      {
-        id: 3,
-        name: "Latte",
-        price: 25000,
-        type: "coffee",
-        image_url: "/assets/images/menu/Latte.jpg",
-        description: "desc",
-      },
-      {
-        id: 4,
-        name: "Flat White",
-        price: 25000,
-        type: "coffee",
-        image_url: "/assets/images/menu/Flat White.jpg",
-        description: "desc",
-      },
-      {
-        id: 5,
-        name: "Mocha",
-        price: 30000,
-        type: "coffee",
-        image_url: "/assets/images/menu/Mocha.jpg",
-        description: "desc",
-      },
-      {
-        id: 6,
-        name: "Macchiato",
-        price: 20000,
-        type: "coffee",
-        image_url: "/assets/images/menu/Macchiato.jpg",
-        description: "desc",
-      },
-
-      // Non-Coffee
-      {
-        id: 7,
-        name: "Chocolate Milk",
-        price: 22000,
-        type: "non-coffee",
-        image_url: "/assets/images/menu/Chocolate Milk.jpg",
-        description: "desc",
-      },
-      {
-        id: 8,
-        name: "Strawberry Smoothie",
-        price: 28000,
-        type: "non-coffee",
-        image_url: "/assets/images/menu/Strawberry Smoothie.jpg",
-        description: "desc",
-      },
-      {
-        id: 9,
-        name: "Matcha Latte",
-        price: 26000,
-        type: "non-coffee",
-        image_url: "/assets/images/menu/Matcha Latte.jpg",
-        description: "desc",
-      },
-      {
-        id: 10,
-        name: "Green Tea",
-        price: 18000,
-        type: "non-coffee",
-        image_url: "/assets/images/menu/Green Tea.jpg",
-        description: "desc",
-      },
-      {
-        id: 11,
-        name: "Lemon Tea",
-        price: 20000,
-        type: "non-coffee",
-        image_url: "/assets/images/menu/Lemon Tea.jpg",
-        description: "desc",
-      },
-      {
-        id: 12,
-        name: "Chamomile Tea",
-        price: 22000,
-        type: "non-coffee",
-        image_url: "/assets/images/menu/Chamomile Tea.jpg",
-        description: "desc",
-      },
-
-      // Snack
-      {
-        id: 13,
-        name: "Croissant",
-        price: 15000,
-        type: "snack",
-        image_url: "/assets/images/menu/Croissant.jpg",
-        description: "desc",
-      },
-      {
-        id: 14,
-        name: "Cheesecake",
-        price: 30000,
-        type: "snack",
-        image_url: "/assets/images/menu/Cheesecake.jpg",
-        description: "desc",
-      },
-      {
-        id: 15,
-        name: "French Fries",
-        price: 18000,
-        type: "snack",
-        image_url: "/assets/images/menu/French Fries.jpg",
-        description: "desc",
-      },
-    ];
     setRaw(rawData);
     setData(rawData);
-  }, []);
+  }, [rawData]);
 
   useEffect(() => {
-    const filteredData = raw.filter((item) => {
-      const matchName = item.name
+    const filteredData = raw?.filter((item) => {
+      const matchName = item?.nama_menu
         ?.toLowerCase()
         .includes(filter.values.search?.toLowerCase());
 
       const matchCategory = filter.values.category
-        ? item.type.toLowerCase() === filter.values.category.toLowerCase()
+        ? item.tipe.toLowerCase() === filter.values.category.toLowerCase()
         : true;
 
       return matchName && matchCategory;
@@ -190,11 +68,11 @@ export default function Tableview() {
 
     setMeta({
       current_page: filter.values.page,
-      total_page: Math.ceil(filteredData.length / filter.values.limit) || 1,
+      total_page: Math.ceil(filteredData?.length / filter.values.limit) || 1,
       items_per_page: filter.values.limit,
     });
 
-    setData(filteredData.slice(start, end));
+    setData(filteredData?.slice(start, end));
   }, [
     filter.values.search,
     filter.values.category,
@@ -211,7 +89,7 @@ export default function Tableview() {
           className="px-6 py-3 text-left text-xs font-medium text-desc uppercase tracking-wider"
         >
           <Checkbox
-            checked={data.length > 0 && selectedIds.length === data.length}
+            checked={data?.length > 0 && selectedIds.length === data.length}
             indeterminate={
               selectedIds.length > 0 && selectedIds.length < data.length
             }
@@ -222,10 +100,10 @@ export default function Tableview() {
           scope="col"
           className="px-6 py-3 text-left text-xs font-medium text-desc uppercase tracking-wider"
         >
-          {selectedIds.length === data.length ? (
+          {selectedIds.length === data?.length ? (
             <Button
               color="red"
-              onClick={() => handleModalDeleteAll(selectedIds)}
+              onClick={() => handleModalDeleteAll(selectedIds, refetch)}
             >
               <FaRegTrashCan size={18} />
             </Button>
@@ -262,26 +140,30 @@ export default function Tableview() {
   );
   const tbody = (
     <tbody className="divide-y divide-gray-200 text-sm text-primary">
-      {data.length ? (
+      {data?.length ? (
         data.map((item) => (
-          <tr key={item.id}>
+          <tr key={item.menu_id}>
             <td className="px-6 py-4">
               <Checkbox
-                checked={selectedIds.includes(item.id)}
-                onChange={() => handleSelectRow(item.id)}
+                checked={selectedIds.includes(item.menu_id)}
+                onChange={() => handleSelectRow(item.menu_id)}
               />
             </td>
             <td className="px-6 py-4 flex justify-start gap-2 items-center">
-              <Avatar radius="xs" size="lg" src={item.image_url} />
-              {item.name}
+              <Avatar
+                radius="xs"
+                size="lg"
+                src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/${item.gambar}`}
+              />
+              {item.nama_menu}
             </td>
             <td className="px-6 py-4">
-              Rp{item.price.toLocaleString("id-ID")}
+              Rp{Number(item.harga).toLocaleString("id-ID")}
             </td>
-            <td className="px-6 py-4">{item.type}</td>
-            <td className="px-6 py-4">{item.description}</td>
+            <td className="px-6 py-4">{item.tipe}</td>
+            <td className="px-6 py-4">{item.deskripsi}</td>
             <td>
-              <ActionButton item={item} />
+              <ActionButton item={item} refetch={refetch} />
             </td>
           </tr>
         ))

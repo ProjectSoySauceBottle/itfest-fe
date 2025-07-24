@@ -15,7 +15,11 @@ export default function Filter({ filter }) {
       <Select
         label={<div className="text-primary">Kategori Menu</div>}
         placeholder="Semua"
-        data={["Coffee", "Non-Coffee", "Snack"]}
+        data={[
+          { value: "coffee", label: "Coffee" },
+          { value: "non_coffee", label: "Non Coffee" },
+          { value: "snack", label: "Snack" },
+        ]}
         className="w-full"
         {...filter.getInputProps("category")}
       />

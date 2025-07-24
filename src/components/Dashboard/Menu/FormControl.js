@@ -20,23 +20,24 @@ import { FiPlus } from "react-icons/fi";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { notifications } from "@mantine/notifications";
+import { apiPut, apiPost } from "@/libs/api";
 
 export default function FormControl({ menu = null }) {
   const form = useForm({
     initialValues: {
-      name: menu?.name || "",
-      type: menu?.type || "",
-      price: menu?.price || null,
-      image_url: menu?.image_url || null,
-      description: menu?.description || "",
+      nama_menu: menu?.nama_menu || "",
+      tipe: menu?.tipe || "",
+      harga: menu?.harga || null,
+      gambar: menu?.gambar || null,
+      deskripsi: menu?.deskripsi || "",
     },
     validate: {
-      name: (value) =>
+      nama_menu: (value) =>
         value.length < 2 ? "Nama harus terdiri dari 2 huruf" : null,
-      type: (value) => (value.length < 1 ? "Kategori harus diisi" : null),
-      price: (value) => (value < 1 ? "Harga harus lebih besar dari 0" : null),
-      description: (value) =>
-        value.length < 1 ? "Deskripsi harus diisi" : null,
+      tipe: (value) => (value.length < 1 ? "Kategori harus diisi" : null),
+      harga: (value) => (value < 1 ? "Harga harus lebih besar dari 0" : null),
+      // gambar: (value) => (value == null ? "Deskripsi harus diisi" : null),
+      deskripsi: (value) => (value.length < 1 ? "Deskripsi harus diisi" : null),
     },
   });
   const [file, setFile] = useState(null);
@@ -48,30 +49,72 @@ export default function FormControl({ menu = null }) {
     router.push("/dashboard/menu");
   };
 
-  const handleSubmit = () => {
-    form.setFieldValue("image_url", file);
-    try {
-      const res = true;
-      notifications.show({
-        title: "Success",
-        message: `Berhasil membuat menu baru`,
-        icon: <IoCheckmarkOutline size={18} />,
-        color: "green",
-        autoClose: true,
-      });
-    } catch (error) {
-      notifications.show({
-        title: "Failed",
-        message: `Gagal membuat menu baru`,
-        icon: <RiCloseLargeFill size={18} />,
-        color: "green",
-        autoClose: true,
-      });
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append("nama_menu", form.values.nama_menu);
+    formData.append("tipe", form.values.tipe);
+    formData.append("harga", form.values.harga);
+    formData.append("deskripsi", form.values.deskripsi);
+
+    if (file) {
+      formData.append("gambar", file);
     }
 
-    form.reset();
-    setFile(null);
-    router.push("/dashboard/menu");
+    if (menu) {
+      const { data, error } = await apiPut(`/menus/${menu.menu_id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (!error) {
+        notifications.show({
+          title: "Success",
+          message: `Berhasil membuat menu baru`,
+          icon: <IoCheckmarkOutline size={18} />,
+          color: "green",
+          autoClose: true,
+        });
+        form.reset();
+        setFile(null);
+        router.push("/dashboard/menu");
+      } else {
+        notifications.show({
+          title: "Failed",
+          message: `Gagal membuat menu baru`,
+          icon: <RiCloseLargeFill size={18} />,
+          color: "red",
+          autoClose: true,
+        });
+      }
+    } else {
+      const { data, error } = await apiPost("/menus", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (!error) {
+        notifications.show({
+          title: "Success",
+          message: `Berhasil membuat menu baru`,
+          icon: <IoCheckmarkOutline size={18} />,
+          color: "green",
+          autoClose: true,
+        });
+        form.reset();
+        setFile(null);
+        router.push("/dashboard/menu");
+      } else {
+        notifications.show({
+          title: "Failed",
+          message: `Gagal membuat menu baru`,
+          icon: <RiCloseLargeFill size={18} />,
+          color: "red",
+          autoClose: true,
+        });
+      }
+    }
   };
 
   const removeFile = () => {
@@ -82,22 +125,23 @@ export default function FormControl({ menu = null }) {
     <div className="border border-desc text-center rounded-lg overflow-hidden">
       <div className="relative w-full h-64">
         <Image
-          src={menu?.image_url}
+          src={menu?.gambar || null}
           alt="image"
           fill
           sizes="full"
           className="object-cover"
         />
       </div>
-      <Tooltip label={menu?.name}>
+      <Tooltip label={menu?.nama_menu}>
         <div className="py-3 text-sm text-center border-t border-b">
-          {menu?.name}
+          {menu?.nama_menu}
         </div>
       </Tooltip>
       <Dropzone
         accept={IMAGE_MIME_TYPE}
         onDrop={(pict) => {
           setFile(pict[0]);
+          form.setFieldValue("gambar", pict[0]);
         }}
       >
         <div className={`flex justify-center items-center cursor-pointer`}>
@@ -146,7 +190,7 @@ export default function FormControl({ menu = null }) {
         <TextInput
           label={<div className="text-primary">Nama Menu</div>}
           placeholder="Nama Menu"
-          {...form.getInputProps("name")}
+          {...form.getInputProps("nama_menu")}
         />
         <NumberInput
           hideControls
@@ -155,36 +199,37 @@ export default function FormControl({ menu = null }) {
           decimalSeparator=","
           thousandSeparator="."
           leftSection={<div className="text-primary text-sm">Rp</div>}
-          {...form.getInputProps("price")}
+          {...form.getInputProps("harga")}
         />
         <Select
           label={<div className="text-primary">Kategori Menu</div>}
           placeholder="Semua"
           data={[
             { value: "coffee", label: "Coffee" },
-            { value: "non-coffee", label: "Non-Coffee" },
+            { value: "non_coffee", label: "Non Coffee" },
             { value: "snack", label: "Snack" },
           ]}
-          {...form.getInputProps("type")}
+          {...form.getInputProps("tipe")}
         />
         <Textarea
           label={<div className="text-primary">Deskripsi</div>}
           placeholder="Deskripsi"
           resize="vertical"
           rows={1}
-          {...form.getInputProps("description")}
+          {...form.getInputProps("deskripsi")}
         />
 
         <Dropzone
           accept={IMAGE_MIME_TYPE}
           onDrop={(files) => {
             setFile(files[0]);
+            form.setFieldValue("gambar", files[0]);
           }}
           hidden={file || menu}
         >
           <div
             className={`border-desc/40 mx-auto rounded-md border border-dashed w-52 h-52 flex justify-center items-center cursor-pointer ${
-              form.errors.picture ? "text-red-500 border-red-500" : ""
+              form.errors.gambar ? "text-red-500 border-red-500" : ""
             }`}
           >
             <div className="font-semibold text-desc/70">Upload Foto</div>

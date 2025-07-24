@@ -8,7 +8,7 @@ import { RiHome3Line } from "react-icons/ri";
 import { deleteCookie, getCookie } from "cookies-next";
 
 const DashboardNavbar = ({ toggle, opened, darkMode }) => {
-  const profile = "assets/images/dummy_profile.jpg";
+  const profile = "/assets/images/dummy_profile.jpg";
   const user = getCookie("user") ? JSON.parse(getCookie("user")) : null;
   const handleClearCookie = () => {
     deleteCookie("token");

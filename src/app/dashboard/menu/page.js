@@ -1,10 +1,12 @@
 import Tableview from "@/components/Dashboard/Menu/Tableview";
+import { useServerFetch } from "@/libs/useServerFetch";
 import React from "react";
 
-export default function MenuPage() {
+export default async function MenuPage() {
+  const { data, error } = await useServerFetch("/menus");
   return (
     <section className="p-8 font-poppins">
-      <Tableview />
+      <Tableview rawData={data} />
     </section>
   );
 }

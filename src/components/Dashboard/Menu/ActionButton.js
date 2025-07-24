@@ -7,8 +7,9 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { RiCloseLargeFill } from "react-icons/ri";
 import { IoCheckmarkOutline } from "react-icons/io5";
 import Link from "next/link";
+import { apiDelete } from "@/libs/api";
 
-export const handleModalDeleteAll = (values) => {
+export const handleModalDeleteAll = (values, refetch) => {
   modals.openConfirmModal({
     children: (
       <div className="font-poppins text-center font-semibold mb-8">
@@ -28,14 +29,13 @@ export const handleModalDeleteAll = (values) => {
     },
     groupProps: { className: "!flex-row-reverse !justify-center !gap-10" },
     labels: { confirm: "Ya, Hapus", cancel: "Batal" },
-    onConfirm: () => handleDeleteAll(values),
+    onConfirm: () => handleDeleteAll(values, refetch),
   });
 };
 
-const handleDeleteAll = (values) => {
-  //   const res = await axios.delete(`/api/table/${value.id}`);
-  const res = true;
-  if (res) {
+const handleDeleteAll = async (values, refetch) => {
+  try {
+    await Promise.all(values.map((item) => apiDelete(`/menus/${item}`)));
     notifications.show({
       title: "Success",
       message: `Berhasil menghapus semua barang`,
@@ -43,17 +43,27 @@ const handleDeleteAll = (values) => {
       color: "green",
       autoClose: true,
     });
-    // fetchData();
+    await refetch();
+  } catch (error) {
+    console.log(error, "delete all");
+    notifications.show({
+      title: "Failed",
+      message: `Gagal menghapus semua barang`,
+      icon: <RiCloseLargeFill size={18} />,
+      color: "red",
+      autoClose: true,
+    });
   }
 };
 
-export default function ActionButton({ item }) {
+export default function ActionButton({ item, refetch }) {
   const handleModalDelete = (value) =>
     modals.openConfirmModal({
       children: (
         <div className="font-poppins text-center font-semibold mb-8">
           <div>
-            Apakah anda yakin ingin menghapus "{value?.name ?? value?.title}" ?
+            Apakah anda yakin ingin menghapus "
+            {value?.nama_menu ?? value?.menu_id}" ?
           </div>
           <small className="text-xs text-gray-800">
             Anda tidak dapat memulihkan barang ini!
@@ -75,22 +85,21 @@ export default function ActionButton({ item }) {
 
   const handleDelete = async (value) => {
     try {
-      //   const res = await axios.delete(`/api/menu/${value.id}`);
-      const res = true;
-      if (res) {
+      const { data, error } = await apiDelete(`/menus/${value.menu_id}`);
+      if (data) {
         notifications.show({
           title: "Success",
-          message: `Berhasil menghapus ${value?.name ?? value.title}`,
+          message: `Berhasil menghapus ${value?.nama_menu ?? value.menu_id}`,
           icon: <IoCheckmarkOutline size={18} />,
           color: "green",
           autoClose: true,
         });
-        // fetchData();
+        refetch();
       }
     } catch (error) {
       notifications.show({
         title: "Failed",
-        message: `Gagal menghapus ${value?.name ?? value.title}`,
+        message: `Gagal menghapus ${value?.nama_menu ?? value.menu_id}`,
         icon: <RiCloseLargeFill size={18} />,
         color: "red",
         autoClose: true,
@@ -102,7 +111,7 @@ export default function ActionButton({ item }) {
       <Button color="red" onClick={() => handleModalDelete(item)}>
         <FaRegTrashCan size={18} />
       </Button>
-      <Link href={`/dashboard/menu/${item?.id}`}>
+      <Link href={`/dashboard/menu/${item?.menu_id}`}>
         <Button color="yellow">
           <FaEdit size={18} />
         </Button>
