@@ -150,11 +150,7 @@ export default function Tableview() {
               />
             </td>
             <td className="px-6 py-4 flex justify-start gap-2 items-center">
-              <Avatar
-                radius="xs"
-                size="lg"
-                src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/${item.gambar}`}
-              />
+              <Avatar radius="xs" size="lg" src={item.gambar} />
               {item.nama_menu}
             </td>
             <td className="px-6 py-4">

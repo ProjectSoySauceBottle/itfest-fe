@@ -18,8 +18,6 @@ export const useServerFetch = async (endpoint, config = {}) => {
       },
     });
 
-    console.log("ressss", endpoint, res.data);
-
     return { data: res.data, error: null };
   } catch (error) {
     return { data: null, error };
