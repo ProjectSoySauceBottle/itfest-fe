@@ -20,14 +20,16 @@ import { FiPlus } from "react-icons/fi";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { notifications } from "@mantine/notifications";
+import { apiPost, apiPut } from "@/libs/api";
 
 export default function FormControl({ table = null }) {
+  const [loading, setLoading] = useState(false);
   const form = useForm({
     initialValues: {
-      tableNumber: table?.tableNumber || "",
+      nomor_meja: table?.nomor_meja || "",
     },
     validate: {
-      tableNumber: (value) =>
+      nomor_meja: (value) =>
         value.length < 1 ? "Nomor meja harus diisi" : null,
     },
   });
@@ -38,94 +40,67 @@ export default function FormControl({ table = null }) {
     router.push("/dashboard/table");
   };
 
-  const handleSubmit = () => {
-    try {
-      const res = true;
-      notifications.show({
-        title: "Success",
-        message: `Berhasil membuat data meja baru`,
-        icon: <IoCheckmarkOutline size={18} />,
-        color: "green",
-        autoClose: true,
+  const handleSubmit = async () => {
+    setLoading(true);
+    if (table) {
+      const { data, error } = await apiPut(
+        `/mejas/${table.meja_id}`,
+        form.values,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (!error) {
+        notifications.show({
+          title: "Success",
+          message: `Berhasil membuat nomor meja baru`,
+          icon: <IoCheckmarkOutline size={18} />,
+          color: "green",
+          autoClose: true,
+        });
+        form.reset();
+        router.push("/dashboard/table");
+      } else {
+        notifications.show({
+          title: "Failed",
+          message: `Gagal membuat nomor meja baru`,
+          icon: <RiCloseLargeFill size={18} />,
+          color: "red",
+          autoClose: true,
+        });
+      }
+      setLoading(false);
+    } else {
+      const { data, error } = await apiPost("/mejas", form.values, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
-    } catch (error) {
-      notifications.show({
-        title: "Failed",
-        message: `Gagal membuat data meja baru`,
-        icon: <RiCloseLargeFill size={18} />,
-        color: "green",
-        autoClose: true,
-      });
+
+      if (!error) {
+        notifications.show({
+          title: "Success",
+          message: `Berhasil membuat nomor meja baru`,
+          icon: <IoCheckmarkOutline size={18} />,
+          color: "green",
+          autoClose: true,
+        });
+        form.reset();
+        router.push("/dashboard/table");
+      } else {
+        notifications.show({
+          title: "Failed",
+          message: `Gagal membuat nomor meja baru`,
+          icon: <RiCloseLargeFill size={18} />,
+          color: "red",
+          autoClose: true,
+        });
+      }
+      setLoading(false);
     }
-
-    form.reset();
-    router.push("/dashboard/table");
-  };
-
-  const removeFile = () => {
-    setFile(null);
-  };
-
-  const previewDefault = (
-    <div className="border border-desc text-center rounded-lg overflow-hidden">
-      <div className="relative w-full h-64">
-        <Image
-          src={table?.image_url}
-          alt="image"
-          fill
-          sizes="full"
-          className="object-cover"
-        />
-      </div>
-      <Tooltip label={table?.name}>
-        <div className="py-3 text-sm text-center border-t border-b">
-          {table?.name}
-        </div>
-      </Tooltip>
-      <Dropzone
-        accept={IMAGE_MIME_TYPE}
-        onDrop={(pict) => {
-          setFile(pict[0]);
-        }}
-      >
-        <div className={`flex justify-center items-center cursor-pointer`}>
-          <Button variant="transparent" ta="center">
-            Ganti Gambar
-          </Button>
-        </div>
-      </Dropzone>
-    </div>
-  );
-  const previews = () => {
-    if (!file) {
-      return;
-    }
-    const imageUrl = URL.createObjectURL(file);
-    return (
-      <div className="border border-desc text-center rounded-lg overflow-hidden">
-        <div className="relative w-full h-64">
-          <Image
-            src={imageUrl}
-            alt="image"
-            fill
-            sizes="full"
-            className="object-cover"
-            onLoad={() => URL.revokeObjectURL(imageUrl)}
-          />
-        </div>
-        <div className="py-3 text-sm text-center border-t border-b">
-          {file.name}
-        </div>
-        <Button
-          variant="transparent"
-          color="gray"
-          onClick={() => removeFile(file)}
-          className="mx-auto"
-        >
-          Remove
-        </Button>
-      </div>
-    );
   };
 
   return (
@@ -137,12 +112,12 @@ export default function FormControl({ table = null }) {
           placeholder="1"
           decimalSeparator=","
           thousandSeparator="."
-          {...form.getInputProps("tableNumber")}
+          {...form.getInputProps("nomor_meja")}
         />
       </div>
 
       <div className="mt-6 flex items-center justify-end gap-2">
-        <Button type="submit" color="blue">
+        <Button type="submit" color="blue" loading={loading} disabled={loading}>
           Simpan
         </Button>
         <Button variant="light" color="grey" onClick={handleCancel}>

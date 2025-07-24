@@ -9,8 +9,11 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { FiPlus } from "react-icons/fi";
 import Link from "next/link";
 import Image from "next/image";
+import { useClientFetch } from "@/hook/useClientFetch";
 
 export default function Tableview() {
+  const { data: rawData, loading, error, refetch } = useClientFetch("/mejas");
+
   const [raw, setRaw] = useState([]);
   const [data, setData] = useState([]);
   const [meta, setMeta] = useState({
@@ -21,7 +24,7 @@ export default function Tableview() {
   const [selectedIds, setSelectedIds] = useState([]);
   const handleSelectAll = (event) => {
     if (event.currentTarget.checked) {
-      const allIds = data.map((item) => item.id);
+      const allIds = data.map((item) => item.meja_id);
       setSelectedIds(allIds);
     } else {
       setSelectedIds([]);
@@ -42,60 +45,28 @@ export default function Tableview() {
     },
   });
   useEffect(() => {
-    const rawData = [
-      {
-        id: 1,
-        tableNumber: "1",
-        qr_code_path: "/assets/images/qrcode.png",
-      },
-      {
-        id: 2,
-        tableNumber: "2",
-        qr_code_path: "/assets/images/qrcode.png",
-      },
-      {
-        id: 3,
-        tableNumber: "3",
-        qr_code_path: "/assets/images/qrcode.png",
-      },
-      {
-        id: 4,
-        tableNumber: "4",
-        qr_code_path: "/assets/images/qrcode.png",
-      },
-      {
-        id: 5,
-        tableNumber: "5",
-        qr_code_path: "/assets/images/qrcode.png",
-      },
-      {
-        id: 6,
-        tableNumber: "6",
-        qr_code_path: "/assets/images/qrcode.png",
-      },
-    ];
     setRaw(rawData);
     setData(rawData);
-  }, []);
+  }, [rawData]);
 
-  useEffect(() => {
-    const filteredData = raw.filter((item) => {
-      const matchNumber = item.tableNumber.includes(filter.values.search);
+  // useEffect(() => {
+  //   const filteredData = raw?.filter((item) => {
+  //     const matchNumber = item.nomor_meja.includes(filter.values.search);
 
-      return matchNumber;
-    });
+  //     return matchNumber;
+  //   });
 
-    const start = (filter.values.page - 1) * filter.values.limit;
-    const end = start + filter.values.limit;
+  //   const start = (filter.values.page - 1) * filter.values.limit;
+  //   const end = start + filter.values.limit;
 
-    setMeta({
-      current_page: filter.values.page,
-      total_page: Math.ceil(filteredData.length / filter.values.limit) || 1,
-      items_per_page: filter.values.limit,
-    });
+  //   setMeta({
+  //     current_page: filter.values.page,
+  //     total_page: Math.ceil(filteredData?.length / filter.values.limit) || 1,
+  //     items_per_page: filter.values.limit,
+  //   });
 
-    setData(filteredData.slice(start, end));
-  }, [filter.values.search, filter.values.page, filter.values.limit, raw]);
+  //   setData(filteredData.slice(start, end));
+  // }, [filter.values.search, filter.values.page, filter.values.limit, raw]);
 
   const thead = (
     <thead>
@@ -105,9 +76,9 @@ export default function Tableview() {
           className="px-6 py-3 text-left text-xs font-medium text-desc uppercase tracking-wider"
         >
           <Checkbox
-            checked={data.length > 0 && selectedIds.length === data.length}
+            checked={data?.length > 0 && selectedIds.length === data?.length}
             indeterminate={
-              selectedIds.length > 0 && selectedIds.length < data.length
+              selectedIds.length > 0 && selectedIds.length < data?.length
             }
             onChange={handleSelectAll}
           />
@@ -116,10 +87,10 @@ export default function Tableview() {
           scope="col"
           className="px-6 py-3 text-left text-xs font-medium text-desc uppercase tracking-wider"
         >
-          {selectedIds.length === data.length ? (
+          {selectedIds.length === data?.length ? (
             <Button
               color="red"
-              onClick={() => handleModalDeleteAll(selectedIds)}
+              onClick={() => handleModalDeleteAll(selectedIds, refetch)}
             >
               <FaRegTrashCan size={18} />
             </Button>
@@ -144,21 +115,21 @@ export default function Tableview() {
   );
   const tbody = (
     <tbody className="divide-y divide-gray-200 text-sm text-primary">
-      {data.length ? (
+      {data?.length ? (
         data.map((item) => (
-          <tr key={item.id}>
+          <tr key={item.meja_id}>
             <td className="px-6 py-4">
               <Checkbox
-                checked={selectedIds.includes(item.id)}
-                onChange={() => handleSelectRow(item.id)}
+                checked={selectedIds.includes(item.meja_id)}
+                onChange={() => handleSelectRow(item.meja_id)}
               />
             </td>
-            <td className="px-6 py-4 text-lg">#{item.tableNumber}</td>
+            <td className="px-6 py-4 text-lg">#{item.nomor_meja}</td>
             <td className="px-6 py-4">
               <div className="relative size-32">
                 <Image
                   src={item.qr_code_path}
-                  alt={item.tableNumber}
+                  alt={item.nomor_meja}
                   fill
                   sizes="full"
                   className="object-cover"
@@ -166,7 +137,7 @@ export default function Tableview() {
               </div>
             </td>
             <td>
-              <ActionButton item={item} />
+              <ActionButton item={item} refetch={refetch} />
             </td>
           </tr>
         ))
