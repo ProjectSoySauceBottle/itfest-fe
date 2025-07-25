@@ -4,7 +4,12 @@ import Image from "next/image";
 import { apiGet, apiPut } from "@/libs/api"; // Pastikan apiPut tersedia
 import { Select } from "@mantine/core";
 
-const statusOptions = ["all", "dalam_antrian", "diproses", "selesai"];
+const statusOptions = [
+  { value: "semua", label: "Semua" },
+  { value: "dalam_antrian", label: "Dalam Antrian" },
+  { value: "diproses", label: "Diproses" },
+  { value: "selesai", label: "Selesai" },
+];
 const statusColors = {
   dalam_antrian: "bg-yellow-100 text-yellow-800",
   diproses: "bg-blue-100 text-blue-800",
@@ -44,7 +49,7 @@ export default function OrderMonitoring() {
   };
 
   const filteredPesanans =
-    filterStatus === "all"
+    filterStatus === "semua"
       ? pesanans
       : pesanans.filter((p) => p.status === filterStatus);
 
@@ -81,7 +86,7 @@ export default function OrderMonitoring() {
                     statusColors[pesanan.status]
                   }`}
                 >
-                  {pesanan.status}
+                  {pesanan.status.replaceAll("_", " ")}
                 </span>
               </div>
 
