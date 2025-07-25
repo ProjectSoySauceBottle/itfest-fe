@@ -8,6 +8,10 @@ export function middleware(request) {
     return NextResponse.redirect(new URL("/admin/login", request.url));
   }
 
+  if (!token && pathname === "/admin/monitoring") {
+    return NextResponse.redirect(new URL("/admin/login", request.url));
+  }
+
   if (token && pathname === "/admin/login") {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
@@ -16,5 +20,5 @@ export function middleware(request) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/admin/login"],
+  matcher: ["/dashboard/:path*", "/admin/login", "/admin/monitoring"],
 };

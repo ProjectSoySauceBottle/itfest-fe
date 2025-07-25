@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { RiPieChart2Fill } from "react-icons/ri";
 import { LuNotebookText } from "react-icons/lu";
+import { CiMonitor } from "react-icons/ci";
 
 export default function Sidebar() {
   const activePath = usePathname();
@@ -15,6 +16,11 @@ export default function Sidebar() {
       label: "Overview",
       icon: <RiPieChart2Fill />,
       path: "/dashboard",
+    },
+    {
+      label: "Monitoring Orders",
+      icon: <CiMonitor />,
+      path: "/admin/monitoring",
     },
     {
       label: "Orders",

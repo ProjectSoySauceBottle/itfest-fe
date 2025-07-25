@@ -7,6 +7,11 @@ import { useEffect, useState } from "react";
 export default function MyOrderPage() {
   const [data, setData] = useState([]);
   const tableNumber = useTableNumber();
+  const statusColors = {
+    dalam_antrian: "bg-yellow-100 text-yellow-800",
+    diproses: "bg-blue-100 text-blue-800",
+    selesai: "bg-green-100 text-green-800",
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,7 +52,11 @@ export default function MyOrderPage() {
                       timeStyle: "short",
                     })}
                   </p>
-                  <span className="text-xs px-2 py-1 rounded-full capitalize font-medium bg-yellow-100 text-yellow-800 text-center">
+                  <span
+                    className={`text-xs px-2 py-1 rounded-full capitalize font-medium text-center ${
+                      statusColors[pesanan.status]
+                    }`}
+                  >
                     {pesanan.status.replaceAll("_", " ")}
                   </span>
                 </div>
