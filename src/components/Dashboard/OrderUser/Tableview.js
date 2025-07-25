@@ -51,132 +51,46 @@ export default function Tableview() {
       limit: 5,
     },
   });
-  // useEffect(() => {
-  //   const rawData = [
-  //     {
-  //       id: 1,
-  //       table: {
-  //         id: 3,
-  //         tableNumber: "3",
-  //         qr_code_path: "/assets/images/qrcode.png",
-  //       },
-  //       menu: {
-  //         id: 1,
-  //         name: "Espresso",
-  //         price: 20000,
-  //         type: "coffee",
-  //         image_url: "/assets/images/menu/Espresso.jpg",
-  //         description: "desc",
-  //       },
-  //       status: "pending",
-  //       quantity: 2,
-  //       total_price: 40000,
-  //       payment_method: "qris",
-  //     },
-  //     {
-  //       id: 2,
-  //       table: {
-  //         id: 4,
-  //         tableNumber: "4",
-  //         qr_code_path: "/assets/images/qrcode.png",
-  //       },
-  //       menu: {
-  //         id: 2,
-  //         name: "Americano",
-  //         price: 25000,
-  //         type: "coffee",
-  //         image_url: "/assets/images/menu/Americano.jpg",
-  //         description: "desc",
-  //       },
-  //       status: "delivered",
-  //       quantity: 1,
-  //       total_price: 25000,
-  //       payment_method: "qris",
-  //     },
-  //     {
-  //       id: 3,
-  //       table: {
-  //         id: 6,
-  //         tableNumber: "6",
-  //         qr_code_path: "/assets/images/qrcode.png",
-  //       },
-  //       menu: {
-  //         id: 1,
-  //         name: "Espresso",
-  //         price: 20000,
-  //         type: "coffee",
-  //         image_url: "/assets/images/menu/Espresso.jpg",
-  //         description: "desc",
-  //       },
-  //       status: "pending",
-  //       quantity: 1,
-  //       total_price: 20000,
-  //       payment_method: "cash",
-  //     },
-  //     {
-  //       id: 4,
-  //       table: {
-  //         id: 1,
-  //         tableNumber: "1",
-  //         qr_code_path: "/assets/images/qrcode.png",
-  //       },
-  //       menu: {
-  //         id: 13,
-  //         name: "Croissant",
-  //         price: 15000,
-  //         type: "snack",
-  //         image_url: "/assets/images/menu/Croissant.jpg",
-  //         description: "desc",
-  //       },
-  //       status: "delivered",
-  //       quantity: 2,
-  //       total_price: 30000,
-  //       payment_method: "qris",
-  //     },
-  //   ];
-  //   setRaw(rawData);
-  //   setData(rawData);
-  // }, []);
   useEffect(() => {
     setRaw(rawData);
     setData(rawData);
   }, [rawData]);
 
-  // useEffect(() => {
-  //   const filteredData = raw?.filter((item) => {
-  //     const matchName = item?.menu?.nama_menu
-  //       ?.toLowerCase()
-  //       .includes(filter.values.search?.toLowerCase());
+  useEffect(() => {
+    const filteredData = raw?.filter((item) => {
+      // const matchName = item?.menu?.nama_menu
+      //   ?.toLowerCase()
+      //   .includes(filter.values.search?.toLowerCase());
 
-  //     const matchTableNumber = item?.meja?.nomor_meja?.includes(
-  //       filter.values.searchTable
-  //     );
+      const matchTableNumber = item?.meja?.nomor_meja?.includes(
+        filter.values.searchTable
+      );
 
-  //     const matchStatus = filter.values.status
-  //       ? item?.status_bayar === filter.values.status
-  //       : true;
+      const matchStatus = filter.values.status
+        ? item?.status_bayar === filter.values.status
+        : true;
 
-  //     return matchName && matchTableNumber && matchStatus;
-  //   });
+      return matchTableNumber && matchStatus;
+    });
 
-  //   const start = (filter.values.page - 1) * filter.values.limit;
-  //   const end = start + filter.values.limit;
+    const start = (filter.values.page - 1) * filter.values.limit;
+    const end = start + filter.values.limit;
 
-  //   setMeta({
-  //     current_page: filter.values.page,
-  //     total_page: Math.ceil(filteredData?.length / filter.values.limit) || 1,
-  //     items_per_page: filter.values.limit,
-  //   });
+    setMeta({
+      current_page: filter.values.page,
+      total_page: Math.ceil(filteredData?.length / filter.values.limit) || 1,
+      items_per_page: filter.values.limit,
+    });
 
-  //   setData(filteredData?.slice(start, end));
-  // }, [
-  //   filter.values.search,
-  //   filter.values.searchTable,
-  //   filter.values.status,
-  //   filter.values.page,
-  //   filter.values.limit,
-  //   raw,
-  // ]);
+    setData(filteredData?.slice(start, end));
+  }, [
+    filter.values.search,
+    filter.values.searchTable,
+    filter.values.status,
+    filter.values.page,
+    filter.values.limit,
+    raw,
+  ]);
 
   const thead = (
     <thead>
@@ -240,7 +154,7 @@ export default function Tableview() {
           scope="col"
           className="px-6 py-3 text-left text-xs font-medium text-desc uppercase tracking-wider"
         >
-          Status
+          Status Bayar
         </th>
         <th
           scope="col"
@@ -263,7 +177,15 @@ export default function Tableview() {
               />
             </td>
             <td className="px-6 py-4">#{item?.meja?.nomor_meja}</td>
-            <td className="px-6 py-4">{item?.menu?.nama_menu}</td>
+            <td className="px-6 py-4 text-nowrap">
+              {item?.pesanan_details?.map((item) => {
+                return (
+                  <div>
+                    {item?.menu?.nama_menu} x<span>{item?.jumlah_pesanan}</span>
+                  </div>
+                );
+              })}
+            </td>
             <td className="px-6 py-4">{item?.jumlah_pesanan}</td>
             <td className="px-6 py-4">
               Rp{Number(item?.total_harga)?.toLocaleString("id-ID")}
@@ -271,6 +193,7 @@ export default function Tableview() {
             <td className="px-6 py-4">{item?.metode_bayar}</td>
             <td className="px-6 py-4">
               <Badge
+                size="sm"
                 variant="light"
                 color={item?.status_bayar == "pending" ? "yellow" : "green"}
               >
