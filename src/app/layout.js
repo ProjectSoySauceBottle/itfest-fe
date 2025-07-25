@@ -10,6 +10,7 @@ import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
 import { cookies, headers } from "next/headers";
 import TableInitializer from "@/components/Initialization/TableInitializer";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -68,8 +69,8 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   const headersList = await headers();
-  const url = headersList.get("x-url") || ""; // fallback kalau tidak pakai middleware
-  const searchParams = new URL(url, "http://localhost"); // base URL boleh apa saja
+  const url = headersList.get("x-url") || "";
+  const searchParams = new URL(url, process.env.NEXT_PUBLIC_BASE_URL);
   const meja = searchParams.searchParams.get("meja");
   console.log("meja", meja);
 
@@ -78,6 +79,11 @@ export default async function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Script
+          src="https://app.sandbox.midtrans.com/snap/snap.js"
+          data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
+          strategy="beforeInteractive"
+        />
         <MantineProvider>
           <ModalsProvider>
             <Notifications position="top-right" />

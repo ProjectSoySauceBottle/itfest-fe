@@ -1,13 +1,24 @@
 "use client";
 
+import { apiPost } from "@/libs/api";
 import { Drawer, Button, Divider, Text } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
+import { IoCheckmarkOutline } from "react-icons/io5";
+import { RiCloseLargeFill } from "react-icons/ri";
 
 export default function NotedMenu({ drawerOpened, setDrawerOpened }) {
   const [notedOrders, setNotedOrders] = useState([]);
+  const [tableNumber, setTableNumber] = useState("");
 
+  useEffect(() => {
+    const meja = localStorage.getItem("meja");
+    if (meja) {
+      setTableNumber(meja);
+    }
+  }, []);
   useEffect(() => {
     const stored = localStorage.getItem("notedOrders");
     setNotedOrders(stored ? JSON.parse(stored) : []);
@@ -23,11 +34,79 @@ export default function NotedMenu({ drawerOpened, setDrawerOpened }) {
     localStorage.setItem("notedOrders", JSON.stringify(updatedOrders));
     window.dispatchEvent(new Event("totalOrder"));
   };
-  const handleOrder = () => {
-    window.open(
-      "https://app.sandbox.midtrans.com/payment-links/1753030776776",
-      "_blank"
+
+  function formatOrderPayload({ notedOrders, mejaId, metodeBayar }) {
+    const jumlah_pesanan = notedOrders.reduce(
+      (sum, item) => sum + item.jumlah_pesanan,
+      0
     );
+    const total_harga = notedOrders.reduce(
+      (sum, item) => sum + item.total_harga,
+      0
+    );
+
+    return {
+      meja_id: mejaId,
+      metode_bayar: metodeBayar, // "cashless" untuk QRIS
+      status_bayar: "pending", // Default status
+      jumlah_pesanan,
+      total_harga,
+      items: notedOrders.map((item) => ({
+        menu_id: item.menu_id,
+        jumlah: item.jumlah_pesanan,
+      })),
+    };
+  }
+
+  const handleOrder = async () => {
+    const payload = formatOrderPayload({
+      notedOrders,
+      mejaId: tableNumber,
+      metodeBayar: "cashless",
+    });
+    try {
+      const { data } = await apiPost("/pesanans/cashless_payment", payload);
+
+      if (data?.success) {
+        window.snap.pay(data.snap, {
+          onSuccess: async function (result) {
+            console.log("Pembayaran berhasil:", result);
+            console.log("dataa window", data);
+            notifications.show({
+              title: "Success",
+              message: `Pembayaran Berhasil`,
+              icon: <IoCheckmarkOutline size={18} />,
+              color: "green",
+              autoClose: true,
+            });
+            const { data: resData, error } = await apiPost(
+              `/pesanans/${data.pesanan_id}/update-status`,
+              { status_bayar: "paid" }
+            );
+
+            localStorage.setItem("notedOrders", "[]");
+          },
+          onPending: function (result) {
+            console.log("Menunggu pembayaran:", result);
+          },
+          onError: function (result) {
+            console.error("Pembayaran error:", result);
+            notifications.show({
+              title: "Failed",
+              message: `Gagal menghapus semua barang`,
+              icon: <RiCloseLargeFill size={18} />,
+              color: "red",
+              autoClose: true,
+            });
+          },
+          onClose: function () {
+            console.log("User menutup modal tanpa menyelesaikan pembayaran");
+          },
+        });
+      }
+    } catch (err) {
+      console.error("Gagal membuat order:", err);
+    }
   };
   return (
     <Drawer
