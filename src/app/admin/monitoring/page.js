@@ -54,7 +54,7 @@ export default function OrderMonitoring() {
         <h1 className="text-2xl font-bold">Monitoring Pesanan</h1>
         <Select
           placeholde="status"
-          className="border border-gray-300 rounded px-3 py-1 text-sm"
+          className="rounded px-3 py-1 text-sm"
           value={filterStatus}
           data={statusOptions}
           onChange={(e) => setFilterStatus(e)}
@@ -125,7 +125,7 @@ export default function OrderMonitoring() {
                 </label>
                 <Select
                   placeholde="status"
-                  className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+                  className="w-full rounded px-2 py-1 text-sm"
                   data={[
                     { value: "dalam_antrian", label: "dalam antrian" },
                     { value: "diproses", label: "diproses" },
