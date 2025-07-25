@@ -4,6 +4,7 @@ import { apiPost } from "@/libs/api";
 import { Drawer, Button, Divider, Text } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { IoCheckmarkOutline } from "react-icons/io5";
@@ -12,6 +13,8 @@ import { RiCloseLargeFill } from "react-icons/ri";
 export default function NotedMenu({ drawerOpened, setDrawerOpened }) {
   const [notedOrders, setNotedOrders] = useState([]);
   const [tableNumber, setTableNumber] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const meja = localStorage.getItem("meja");
@@ -59,6 +62,7 @@ export default function NotedMenu({ drawerOpened, setDrawerOpened }) {
   }
 
   const handleOrder = async () => {
+    setLoading(true);
     const payload = formatOrderPayload({
       notedOrders,
       mejaId: tableNumber,
@@ -74,7 +78,12 @@ export default function NotedMenu({ drawerOpened, setDrawerOpened }) {
             console.log("dataa window", data);
             notifications.show({
               title: "Success",
-              message: `Pembayaran Berhasil`,
+              message: (
+                <div>
+                  <p className="text-sm">Pembayaran berhasil</p>
+                  <p className="text-sm">Cek riwayat pemesanan</p>
+                </div>
+              ),
               icon: <IoCheckmarkOutline size={18} />,
               color: "green",
               autoClose: true,
@@ -83,8 +92,12 @@ export default function NotedMenu({ drawerOpened, setDrawerOpened }) {
               `/pesanans/${data.pesanan_id}/update-status`,
               { status_bayar: "paid" }
             );
-
+            setNotedOrders([]);
             localStorage.setItem("notedOrders", "[]");
+            setLoading(false);
+            setDrawerOpened(false);
+            router.push("/my-order");
+            window.dispatchEvent(new Event("totalOrder"));
           },
           onPending: function (result) {
             console.log("Menunggu pembayaran:", result);
@@ -98,6 +111,7 @@ export default function NotedMenu({ drawerOpened, setDrawerOpened }) {
               color: "red",
               autoClose: true,
             });
+            setLoading(false);
           },
           onClose: function () {
             console.log("User menutup modal tanpa menyelesaikan pembayaran");
@@ -106,6 +120,7 @@ export default function NotedMenu({ drawerOpened, setDrawerOpened }) {
       }
     } catch (err) {
       console.error("Gagal membuat order:", err);
+      setLoading(false);
     }
   };
   return (
@@ -178,7 +193,8 @@ export default function NotedMenu({ drawerOpened, setDrawerOpened }) {
           radius="md"
           size="md"
           mt="sm"
-          disabled={notedOrders.length === 0}
+          disabled={notedOrders.length === 0 || loading}
+          loading={loading}
         >
           Pesan Sekarang
         </Button>
