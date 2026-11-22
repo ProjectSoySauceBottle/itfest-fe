@@ -108,7 +108,7 @@ export default function OrderMonitoring() {
                         src={item.menu.gambar}
                         alt={item.menu.nama_menu}
                         fill
-                        sizes="full"
+                        sizes="96px"
                         className="object-cover"
                       />
                     </div>

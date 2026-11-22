@@ -76,7 +76,7 @@ export default function MyOrderPage() {
                           src={detail.menu.gambar}
                           alt={detail.menu.nama_menu}
                           fill
-                          sizes="full"
+                          sizes="96px"
                           className="rounded-md object-cover"
                         />
                       </div>

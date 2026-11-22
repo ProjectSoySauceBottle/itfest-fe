@@ -142,7 +142,7 @@ export default function FormControl({ menu = null }) {
           src={menu?.gambar || null}
           alt="image"
           fill
-          sizes="full"
+          sizes="160px"
           className="object-cover"
         />
       </div>
@@ -186,7 +186,7 @@ export default function FormControl({ menu = null }) {
             src={imageUrl}
             alt="image"
             fill
-            sizes="full"
+            sizes="160px"
             className="object-cover"
             onLoad={() => URL.revokeObjectURL(imageUrl)}
           />

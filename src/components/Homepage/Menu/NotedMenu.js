@@ -145,7 +145,7 @@ export default function NotedMenu({ drawerOpened, setDrawerOpened }) {
                   src={item.gambar}
                   alt={item.nama_menu}
                   fill
-                  sizes="full"
+                  sizes="96px"
                   className="object-cover object-center rounded-md"
                 />
               </div>

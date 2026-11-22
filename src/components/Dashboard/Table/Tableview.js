@@ -136,7 +136,7 @@ export default function Tableview() {
                   src={item.qr_code_path}
                   alt={item.nomor_meja}
                   fill
-                  sizes="full"
+                  sizes="128px"
                   className="object-cover"
                 />
               </div>

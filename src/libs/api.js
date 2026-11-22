@@ -8,7 +8,8 @@ function getToken() {
 }
 const instance = axios.create({
   baseURL: BASE_URL,
-  // withCredentials: true,
+  withCredentials: true,
+  withXSRFToken: true,
 });
 
 instance.interceptors.request.use((config) => {
